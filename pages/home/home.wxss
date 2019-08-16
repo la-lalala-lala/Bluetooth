@@ -1,0 +1,99 @@
+/* pages/home/home.wxss */
+page .container {
+  height: 100%;
+  margin:20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .page-label{
+  font-size: 26rpx;
+}
+
+.container .line-point{
+  margin-top: 6rpx;
+  height: 6rpx;
+  border-radius: 6rpx;
+  width: 26rpx;
+  background-color: #8080c0;
+}
+
+/* 蓝牙状态 */
+.container .status-view{
+  margin-top: 20rpx;
+  background-color: #f1fafa;
+  border-radius: 4rpx;
+  padding-bottom: 16rpx;
+  padding-left: 16rpx;
+  padding-right: 16rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content:flex-start;
+  border-left-style:solid;
+  border-left-width:4rpx;
+  border-left-color:#8080c0; 
+}
+
+.container .status-view .date-view{
+  margin-top: 16rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+}
+.container .status-view .date-view .label{
+  color:#585d86;
+  font-size: 16rpx;
+  white-space:nowrap;
+}
+.container .status-view .date-view .data{
+  color:#000c5c;
+  font-size: 16rpx;
+}
+
+.container .table-view{
+  margin-top: 20rpx;
+  background-color: #f1fafa;
+  border-radius: 4rpx;
+}
+.container .table-view .item-view{
+    padding-bottom: 16rpx;
+    padding-left: 16rpx;
+    padding-right: 16rpx;
+    padding-top: 16rpx;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.container .table-view .item-view .device-icon{
+  width: 30rpx;
+  height: 30rpx;
+  float: left;
+}
+
+.container .table-view .item-view .device-icon image{
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.container .table-view .item-view .device-info{
+  width: 100%;
+  margin-left: 20rpx;
+  float: left;
+  border-bottom-style:solid;
+  border-bottom-width:0.01em;
+  border-bottom-color:#e8e8ff;
+  font-size: 16rpx;
+  line-height: 30rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.container .table-view .item-view .device-info .device-name{
+  font-size: 16rpx;
+}
+
+.container .table-view .item-view .device-info .device-id{
+  font-size: 16rpx;
+}

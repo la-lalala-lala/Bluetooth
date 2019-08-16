@@ -1,0 +1,11 @@
+<!--pages/keyboard/keyboard.wxml-->
+<view class="container">
+  <view class="page-label">
+    指令调试
+  </view>
+  <view class="line-point"></view>
+  <!-- 命令按钮 -->
+  <view class="button-view">
+    <view class="button-item"  wx:for='{{30}}' wx:key='{{index}}' bindtouchstart="mytouchstart" bindtouchend="mytouchend" data-id='{{index}}'>{{index}}</view>
+  </view>
+</view>

@@ -1,0 +1,31 @@
+page {
+  background-color: #ebebe4;
+}
+page,view,scroll-view,image,text,navigator,swiper,swiper-item{
+  box-sizing: border-box;
+  padding:0;
+  margin:0;
+  font-family:"Microsoft YaHei";
+}
+ 
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+} 
+
+.loadmore{
+  font-size: 30rpx;
+  color: #585d86;
+  text-align: center;
+}
+.not_data{
+  text-align: center;
+  font-size: 30rpx;
+  color: #585d86;
+  margin-top: 300rpx;
+}
+.not_data image{
+  width: 82rpx;
+  height: 94rpx;
+}

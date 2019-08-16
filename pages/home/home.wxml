@@ -1,0 +1,51 @@
+<!--pages/home/home.wxml-->
+<view class="container">
+  <view class="page-label">
+    蓝牙连接
+  </view>
+  <view class="line-point"></view>
+  <!-- 蓝牙操作面板 -->
+  <view class="status-view">
+    <view class="date-view">
+      <text class="label">设备:</text>
+      <view class="data">
+        <switch type='switch' style='zoom:.7;' checked="{{isbluetoothready}}" color="#8080c0" bindchange="switchBlueTooth"/>
+      </view>
+    </view>
+    <view class="date-view">
+      <text class="label">搜索:</text>
+      <view class="data">
+        <switch type='switch' style='zoom:.7;' checked="{{searchingstatus}}" color="#8080c0" bindchange='startSearch'/>
+      </view>
+    </view>
+  </view>
+   <!-- 蓝牙信息 -->
+  <view class="status-view">
+    <view class="date-view">
+      <text class="label">设备状态:</text>
+      <text class="data">{{isbluetoothready?'就绪':'断开'}}</text>
+    </view>
+    <view class="date-view">
+      <text class="label">搜索状态:</text>
+      <text class="data">{{searchingstatus?'正在搜索':'搜索结束'}}</text>
+    </view>
+    <view class="date-view">
+      <text class="label">已发现外围设备数:</text>
+      <text class="data">{{devices.length}}</text>
+    </view>
+    <view class="date-view">
+      <text class="label">已连接设备:</text>
+      <text class="data">HC-08</text>
+    </view>
+   </view>
+   <view class="table-view" >
+      <!-- 展示每个设备 -->
+      <view class="item-view" wx:for='{{devices}}' wx:key='{{index}}'>
+          <view class="device-icon"><image src="/resources/home/multiple_devices.png"></image></view>
+          <view class="device-info" bindtap='connectDevice' data-deviceId='{{item.deviceId}}'>
+            <view class="device-name">{{item.name}}</view>
+            <view class="device-id">{{item.deviceId}}</view>
+          </view>
+      </view>
+    </view>
+  </view>

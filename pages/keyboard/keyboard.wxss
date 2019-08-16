@@ -1,0 +1,39 @@
+/* pages/keyboard/keyboard.wxss */
+page .container {
+  height: 100%;
+  margin:20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .page-label{
+  font-size: 26rpx;
+}
+
+.container .line-point{
+  margin-top: 6rpx;
+  height: 6rpx;
+  border-radius: 6rpx;
+  width: 26rpx;
+  background-color: #8080c0;
+}
+
+/* 命令按钮 */
+.container .button-view{
+  margin-top: 32rpx;
+  border-radius: 10rpx;
+  padding-bottom: 28rpx;
+  padding-left: 32rpx;
+  padding-right: 32rpx;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.container .button-view .button-item{
+  margin-top: 30rpx;
+  background-color: #f1fafa;
+  width: 130rpx;
+  height: 80rpx;
+}
