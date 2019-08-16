@@ -52,6 +52,7 @@ page .container {
 
 .container .table-view{
   margin-top: 20rpx;
+  margin-bottom: 20rpx;
   background-color: #f1fafa;
   border-radius: 4rpx;
 }
