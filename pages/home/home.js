@@ -47,6 +47,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
+    this.closeConnection()
     this.closeAdapter()
   },
 
@@ -84,8 +85,22 @@ Page({
       // 初始化适配器
       that.initBluetooth()
     }else{
+      // 关闭蓝牙
+      that.closeConnection()
       // 关闭适配器
       that.closeAdapter()
+    }
+  },
+
+  /**
+   * 关闭连接状态
+   */
+  switchConnection: function (){
+    var that = this;
+    // 获取切换前的设备状态
+    let connectionStatus = that.data.ble;
+    if (connectionStatus !== null){
+      this.closeConnection()
     }
   },
 
@@ -108,6 +123,9 @@ Page({
           console.log("蓝牙适配器状态变化", res)
           if (res.available === false) {
             // 蓝牙不可用
+            // 断开连接
+            that.closeConnection()
+            // 关闭适配器
             that.closeAdapter()
             that.setData({
               devices: [],
@@ -245,7 +263,8 @@ Page({
         _this.setData({
           isbluetoothready: false,
           searchingstatus: false,
-          devices: []
+          devices: [],
+          ble:{}
         })
       },
       fail(res) {
@@ -260,6 +279,27 @@ Page({
       }
     })
     console.log("closeAdapter执行完毕")
+  },
+
+  /**
+   * 关闭蓝牙连接
+   */
+  closeConnection: function() {
+    var that = this;
+    let ble = that.data.ble
+    if (ble.deviceId != null){
+      wx.closeBLEConnection({
+        deviceId: ble.deviceId,
+        complete: function (res) {
+          console.log("断开蓝牙连接")
+          // 清除存储的连接信息
+          wx.setStorageSync('ble', {});
+          that.setData({
+            ble: {}
+          })
+        }
+      })
+    }
   },
 
   /**
@@ -283,43 +323,60 @@ Page({
 
   //连接设备
   connectDevice: function (e) {
-    var that = this;
-    wx.showLoading({
-      title: '连接蓝牙设备中...',
-    })
-    wx.createBLEConnection({
-      deviceId: e.currentTarget.dataset.deviceid,
-      success: function (res) {
-        // 关闭蓝牙
-        wx.stopBluetoothDevicesDiscovery({
-          success: function (res) {
-            console.log('连接蓝牙成功之后关闭蓝牙搜索');
-          }
-        })
-        // 保存连接成功的设备信息
-        that.setData({
-          ble: {
-            connectionStatus:true,
-            deviceId: e.currentTarget.dataset.deviceid
-          },
-        })
+    // 为了防止重复连接，连接前必须要判断
+    let that = this;
+    // 获取切换前的设备状态
+    let ble = that.data.ble;
+    if (Object.keys(ble).length !== 0) {
+      if (e.currentTarget.dataset.deviceid === ble.deviceId){
         wx.showModal({
           title: '设备连接完毕',
-          content: '连接成功'
+          content: '您已经连接了该设备'
         })
-        //获取蓝牙设备所有服务
-        that.getServiceId()
-      },
-      fail: function (res) {
+      }else{
         wx.showModal({
           title: '设备连接失败',
-          content: res.errMsg
+          content: '您已经连接了设备:' + ble.deviceId + '请您断开该连接后重试。'
         })
-      },
-      complete: function () {
-        wx.hideLoading()
       }
-    })
+    }else{
+      wx.showLoading({
+        title: '连接蓝牙设备中...',
+      })
+      wx.createBLEConnection({
+        deviceId: e.currentTarget.dataset.deviceid,
+        success: function (res) {
+          // 关闭蓝牙
+          wx.stopBluetoothDevicesDiscovery({
+            success: function (res) {
+              console.log('连接蓝牙成功之后关闭蓝牙搜索');
+            }
+          })
+          // 保存连接成功的设备信息
+          that.setData({
+            ble: {
+              connectionStatus: true,
+              deviceId: e.currentTarget.dataset.deviceid
+            },
+          })
+          wx.showModal({
+            title: '设备连接完毕',
+            content: '连接成功'
+          })
+          //获取蓝牙设备所有服务
+          that.getServiceId()
+        },
+        fail: function (res) {
+          wx.showModal({
+            title: '设备连接失败',
+            content: res.errMsg
+          })
+        },
+        complete: function () {
+          wx.hideLoading()
+        }
+      })
+    }
   },
 
   /**
@@ -408,7 +465,7 @@ Page({
    */
   sendMy(buffer) {
     var that = this
-    let ble = _this.data.ble
+    let ble = that.data.ble
     wx.writeBLECharacteristicValue({
       // 这里的 deviceId 需要在上面的 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
       deviceId: ble.deviceId,

@@ -68,43 +68,54 @@ Page({
    * 按下事件
    */
   mytouchstart: function (e) {
-    let ble = wx.getStorageSync('ble');
-    console.log("得到设备信息："+JSON.stringify(ble))
-    this.sendMy(ble, this.string2buffer("01"))
+    this.sendMy(this.string2buffer("0x01"))
   },
 
   /**
    * 松开事件
    */
   mytouchend: function (e) {
-    let ble = wx.getStorageSync('ble');
-    console.log("得到设备信息：" + JSON.stringify(ble))
-    this.sendMy(ble, this.string2buffer('0xAB'))
+    this.sendMy(this.string2buffer('0xAB'))
   },
 
   /**
    * 发送数据
    */
-  sendMy(ble,buffer) {
-    wx.writeBLECharacteristicValue({
-      // 这里的 deviceId 需要在上面的 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
-      deviceId: ble.deviceId,
-      // 这里的 serviceId 需要在上面的 getBLEDeviceServices 接口中获取
-      serviceId: ble.serviceId,
-      // 这里的 characteristicId 需要在上面的 getBLEDeviceCharacteristics 接口中获取
-      characteristicId: ble.writeId,//第二步写入的特征值
-      // 这里的value是ArrayBuffer类型
-      value: buffer,
-      success: function (res) {
-        console.log("写入成功")
-      },
-      fail: function () {
-        console.log('写入失败')
-      },
-      complete: function () {
-        console.log("调用结束");
-      }
-    })
+  sendMy(buffer) {
+    // 发送前校验蓝牙连接是否就绪
+    let ble = wx.getStorageSync('ble')
+    console.log(ble)
+    if (Object.keys(ble).length !== 0) {
+      wx.writeBLECharacteristicValue({
+        // 这里的 deviceId 需要在上面的 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
+        deviceId: ble.deviceId,
+        // 这里的 serviceId 需要在上面的 getBLEDeviceServices 接口中获取
+        serviceId: ble.serviceId,
+        // 这里的 characteristicId 需要在上面的 getBLEDeviceCharacteristics 接口中获取
+        characteristicId: ble.writeId,//第二步写入的特征值
+        // 这里的value是ArrayBuffer类型
+        value: buffer,
+        success: function (res) {
+          console.log("写入成功")
+        },
+        fail: function (res) {
+          // 清除存储的连接信息
+          wx.setStorageSync('ble', {});
+          wx.showModal({
+            title: '发送数据失败',
+            content: res.errMsg
+          })
+        },
+        complete: function () {
+          console.log("调用结束");
+        }
+      })
+    }else{
+      wx.showModal({
+        title: '发送数据失败',
+        content: '请连接蓝牙设备后再发送数据'
+      })
+    }
   },
 
   /**
