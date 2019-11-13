@@ -1,1 +1,103 @@
 /* pages/setting/setting.wxss */
+
+page .container .line-border{
+  border-bottom-style:solid;
+  border-bottom-width:0.01em;
+  border-bottom-color:#e8e8ff;
+  padding-bottom:16rpx;
+}
+
+page .container {
+  height: 100%;
+  margin:20rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .page-label{
+  font-size: 26rpx;
+}
+
+.container .line-point{
+  margin-top: 6rpx;
+  height: 6rpx;
+  border-radius: 6rpx;
+  width: 26rpx;
+  background-color: #8080c0;
+}
+
+/* 指令设置 */
+.container .order-view{
+  margin-top: 20rpx;
+  background-color: #f1fafa;
+  border-radius: 4rpx;
+  padding-bottom: 16rpx;
+  padding-left: 16rpx;
+  padding-right: 16rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content:flex-start;
+  border-left-style:solid;
+  border-left-width:4rpx;
+  border-left-color:#8080c0; 
+}
+
+.container .order-view .date-view{
+  padding-top: 16rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.container .order-view .date-view .title{
+  font-size: 22rpx;
+}
+
+.container .order-view .date-view .label{
+  color:#585d86;
+  font-size: 16rpx;
+  white-space:nowrap;
+}
+.container .order-view .date-view .operation{
+  color:#000c5c;
+  font-size: 16rpx;
+}
+
+/* 其它设置 */
+.container .other-view{
+  margin-top: 20rpx;
+  background-color: #f1fafa;
+  border-radius: 4rpx;
+  padding-bottom: 16rpx;
+  padding-left: 16rpx;
+  padding-right: 16rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content:flex-start;
+  border-left-style:solid;
+  border-left-width:4rpx;
+  border-left-color:#8080c0; 
+}
+
+.container .other-view .date-view{
+  padding-top: 16rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.container .other-view .date-view .title{
+  font-size: 22rpx;
+}
+
+.container .other-view .date-view .label{
+  color:#585d86;
+  font-size: 16rpx;
+  white-space:nowrap;
+}
+.container .other-view .date-view .operation{
+  color:#000c5c;
+  font-size: 16rpx;
+}

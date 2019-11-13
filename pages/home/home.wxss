@@ -1,4 +1,11 @@
 /* pages/home/home.wxss */
+page .container .line-border{
+  border-bottom-style:solid;
+  border-bottom-width:0.01em;
+  border-bottom-color:#e8e8ff;
+  padding-bottom:16rpx;
+}
+
 page .container {
   height: 100%;
   margin:20rpx;
@@ -35,7 +42,7 @@ page .container {
 }
 
 .container .status-view .date-view{
-  margin-top: 16rpx;
+  padding-top: 16rpx;
   display: flex;
   flex-direction: row;
   justify-content:space-between;

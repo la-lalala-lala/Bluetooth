@@ -27,15 +27,15 @@
   </view>
    <!-- 蓝牙信息 -->
   <view class="status-view">
-    <view class="date-view">
+    <view class="date-view line-border">
       <text class="label">设备状态:</text>
       <text class="data">{{isbluetoothready?'就绪':'断开'}}</text>
     </view>
-    <view class="date-view">
+    <view class="date-view line-border">
       <text class="label">搜索状态:</text>
       <text class="data">{{searchingstatus?'正在搜索':'搜索结束'}}</text>
     </view>
-    <view class="date-view">
+    <view class="date-view line-border">
       <text class="label">已发现外围设备数:</text>
       <text class="data">{{devices.length}}</text>
     </view>
