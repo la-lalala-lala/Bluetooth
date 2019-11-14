@@ -9,12 +9,12 @@
     <view class="date-view">
       <text class="title">指令设置</text>
     </view>
-    <view class="date-view line-border">
+    <view class="date-view line-border" bindtap="jumpEditOrderPage">
       <text class="label">修改指令</text>
       <text class="operation">➤</text>
     </view>
-    <view class="date-view">
-      <text class="label">重置指令</text>
+    <view class="date-view" bindtap="removeOrder">
+      <text class="label">清空指令</text>
       <text class="operation">➤</text>
     </view>
   </view>

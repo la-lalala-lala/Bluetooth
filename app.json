@@ -2,7 +2,8 @@
   "pages": [
     "pages/home/home",
     "pages/setting/setting",
-    "pages/keyboard/keyboard"
+    "pages/keyboard/keyboard",
+    "pages/order/order"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -10,32 +11,31 @@
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
   },
- "tabBar": {
-      "color": "#5e72ed",
-      "font-size": "20rpx",
-      "selectedColor": "#ccc",
-      "borderStyle": "black",
-      "backgroundColor": "#ebebe4",
-      "list": [
-        {
-          "selectedIconPath": "/resources/tabar/Home.png",
-          "iconPath": "/resources/tabar/Home.png",
-          "pagePath": "pages/home/home",
-          "text": "连接"
-        },
-        {
-          "selectedIconPath": "/resources/tabar/Map.png",
-          "iconPath": "/resources/tabar/Map.png",
-          "pagePath": "pages/keyboard/keyboard",
-          "text": "调试"
-        },
-        {
-          "selectedIconPath": "/resources/tabar/Setting.png",
-          "iconPath": "/resources/tabar/Setting.png",
-          "pagePath": "pages/setting/setting",
-          "text": "设置"
-        }
-      ]
-    },
+  "tabBar": {
+    "color": "#5e72ed",
+    "selectedColor": "#ccc",
+    "borderStyle": "black",
+    "backgroundColor": "#ebebe4",
+    "list": [
+      {
+        "selectedIconPath": "/resources/tabar/Home.png",
+        "iconPath": "/resources/tabar/Home.png",
+        "pagePath": "pages/home/home",
+        "text": "连接"
+      },
+      {
+        "selectedIconPath": "/resources/tabar/Map.png",
+        "iconPath": "/resources/tabar/Map.png",
+        "pagePath": "pages/keyboard/keyboard",
+        "text": "调试"
+      },
+      {
+        "selectedIconPath": "/resources/tabar/Setting.png",
+        "iconPath": "/resources/tabar/Setting.png",
+        "pagePath": "pages/setting/setting",
+        "text": "设置"
+      }
+    ]
+  },
   "sitemapLocation": "sitemap.json"
 }

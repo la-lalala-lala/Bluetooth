@@ -1,11 +1,11 @@
-// pages/setting/setting.js
+// pages/order.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    showForm:false
   },
 
   /**
@@ -65,27 +65,31 @@ Page({
   },
 
   /**
-   * 跳转到修改指令页面
+   * 长按修改指令
    */
-  jumpEditOrderPage:function(e){
-    wx.navigateTo({
-      url: '/pages/order/order'
+  handleEditOrder:function(){
+    this.visibleForm()
+  },
+
+  /**
+   * 显示弹框
+   */
+  visibleForm:function(){
+    let that = this
+    that.setData({
+      showForm:true
     })
   },
 
   /**
-   * 删除指令
+   * 隐藏弹框
    */
-  removeOrder: function () {
-    wx.showModal({
-      title: '清空确认',
-      content: '您确认要清空所有指令么？',
-      success: function (res) {
-        if (res.confirm) {
-          console.log("it's ok")
-        }
-      }
+  hiddenForm: function () {
+    let that = this
+    that.setData({
+      showForm: false
     })
-  }
+  },
+
 
 })

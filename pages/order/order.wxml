@@ -1,0 +1,33 @@
+<!--pages/order.wxml-->
+<view class="container">
+  <view class="page-label">
+    修改指令
+  </view>
+  <view class="line-point"></view>
+  <!-- 命令按钮 -->
+  <view class="button-view">
+    <view class="button-item"  wx:for='{{30}}' wx:key='{{index}}' bindlongpress="handleEditOrder" data-id='{{index}}'>{{index}}</view>
+  </view>
+  <!-- 输入弹框 -->
+  <view class='toast-box' hidden='{{!showForm}}'>
+        <view class='toastbg'></view>
+        <view class='showToast'>
+            <view class='toast-title'>
+                <text>修改指令</text>
+            </view>
+            <view class='toast-main'>
+                <view class='toast-input'>
+                    <input placeholder='请输入指令' bindinput='setValue' data-name='stuEidtName'></input>
+                </view>
+            </view>
+            <view class='toast-button'>
+                <view class='button1'>
+                    <button bindtap="hiddenForm">取消</button>
+                </view>
+                <view class='button2'>
+                    <button bindtap='hiddenForm'>确定</button>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
