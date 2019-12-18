@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    showForm:false
+    showForm:false,
+    nowIndex:-1
   },
 
   /**
@@ -67,8 +68,14 @@ Page({
   /**
    * 长按修改指令
    */
-  handleEditOrder:function(){
-    this.visibleForm()
+  handleEditOrder:function(e){
+    let _this = this
+    let id = e.target.dataset.id
+    _this.setData({
+      nowIndex: id
+    },function(){
+      _this.visibleForm()
+    })
   },
 
   /**
@@ -90,6 +97,15 @@ Page({
       showForm: false
     })
   },
+
+  //动态绑定文本框
+  bindInput:function(e){
+    let _this = this
+    let item = e.currentTarget.dataset.item;
+    let id = e.target.dataset.id
+    console.log(item+':'+e.detail.value)
+    console.log(id)
+  }
 
 
 })

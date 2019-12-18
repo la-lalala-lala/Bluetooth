@@ -78,7 +78,6 @@ page .container {
     padding-top: 2vh;
     padding-bottom: 2vh;
     background-color: white;
-    text-align: center;
 }
  
 .container .toast-box .showToast .toast-main .toast-input {

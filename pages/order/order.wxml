@@ -17,7 +17,10 @@
             </view>
             <view class='toast-main'>
                 <view class='toast-input'>
-                    <input placeholder='请输入指令' bindinput='setValue' data-name='stuEidtName'></input>
+                    <input placeholder='指令名' maxlength="5" bindinput='bindInput' data-id='{{nowIndex}}' data-item='orderName'></input>
+                </view>
+                <view class='toast-input'>
+                    <input placeholder='指令值' maxlength="5" bindinput='bindInput' data-id='{{nowIndex}}' data-item='orderValue'></input>
                 </view>
             </view>
             <view class='toast-button'>
