@@ -6,7 +6,7 @@
   <view class="line-point"></view>
   <!-- 命令按钮 -->
   <view class="button-view">
-    <view class="button-item"  wx:for='{{30}}' wx:key='{{index}}' bindlongpress="handleEditOrder" data-id='{{index}}'>{{index}}</view>
+    <view class="button-item" wx:for='{{orders}}' wx:key='{{index}}' bindlongpress="handleEditOrder" data-id='{{index}}'>{{item.name}}</view>
   </view>
   <!-- 输入弹框 -->
   <view class='toast-box' hidden='{{!showForm}}'>
@@ -17,10 +17,13 @@
             </view>
             <view class='toast-main'>
                 <view class='toast-input'>
-                    <input placeholder='指令名' maxlength="5" bindinput='bindInput' data-id='{{nowIndex}}' data-item='orderName'></input>
+                    <input placeholder='指令名' maxlength="5" bindinput='bindInput' data-item='name' value="{{form.name}}"></input>
                 </view>
-                <view class='toast-input'>
-                    <input placeholder='指令值' maxlength="5" bindinput='bindInput' data-id='{{nowIndex}}' data-item='orderValue'></input>
+                <view class='toast-input' style="margin-top:1vh">
+                    <input placeholder='按下发送指令值,eg:0x01' maxlength="10" bindinput='bindInput' data-item='touchstart' value="{{form.touchstart}}"></input>
+                </view>
+                <view class='toast-input' style="margin-top:1vh">
+                    <input placeholder='松开发送指令值,eg:0xAB' maxlength="10" bindinput='bindInput' data-item='touchend' value="{{form.touchend}}"></input>
                 </view>
             </view>
             <view class='toast-button'>
@@ -28,7 +31,7 @@
                     <button bindtap="hiddenForm">取消</button>
                 </view>
                 <view class='button2'>
-                    <button bindtap='hiddenForm'>确定</button>
+                    <button bindtap='sureSave' data-id='{{nowIndex}}'>确定</button>
                 </view>
             </view>
         </view>

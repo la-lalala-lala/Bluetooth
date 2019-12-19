@@ -77,12 +77,31 @@ Page({
    * 删除指令
    */
   removeOrder: function () {
+    let orders = wx.getStorageSync('order') || [];
+    if (orders.length <= 0) {
+      wx.showModal({
+        title: '错误提示',
+        content: '本地没有可供清空的指令'
+      })
+      return
+    }
     wx.showModal({
       title: '清空确认',
       content: '您确认要清空所有指令么？',
       success: function (res) {
         if (res.confirm) {
-          console.log("it's ok")
+          try {
+              wx.clearStorageSync();
+              wx.showModal({
+                title: '操作提示',
+                content: '指令清除成功'
+              })
+          } catch (e) {
+            wx.showModal({
+              title: '错误提示',
+              content: '清空指令失败，请稍后重试'
+            })
+          }
         }
       }
     })

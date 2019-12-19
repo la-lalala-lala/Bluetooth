@@ -32,10 +32,14 @@ page .container {
 }
 
 .container .button-view .button-item{
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center;     /* 垂直居中 */
   margin-top: 30rpx;
   background-color: #f1fafa;
   width: 130rpx;
   height: 80rpx;
+  font-size: 1.4em
 }
 
 /* 弹窗样式 */
