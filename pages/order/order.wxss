@@ -25,17 +25,18 @@ page .container {
   padding-bottom: 28rpx;
   padding-left: 32rpx;
   padding-right: 32rpx;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  /* 采用grid布局解决最后一行元素对齐 */
+  display: grid;
   justify-content: space-between;
+  grid-template-columns: repeat(auto-fill, 130rpx);
+  grid-gap: 15rpx;
 }
 
 .container .button-view .button-item{
   display: flex;
   justify-content: center; /* 水平居中 */
   align-items: center;     /* 垂直居中 */
-  margin-top: 30rpx;
+  margin-top: 15rpx;
   background-color: #f1fafa;
   width: 130rpx;
   height: 80rpx;

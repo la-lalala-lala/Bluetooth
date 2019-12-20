@@ -14,7 +14,7 @@
       <text class="operation">➤</text>
     </view>
     <view class="date-view" bindtap="removeOrder">
-      <text class="label">清空指令</text>
+      <text class="label">重置指令</text>
       <text class="operation">➤</text>
     </view>
   </view>

@@ -25,10 +25,11 @@ page .container {
   padding-bottom: 28rpx;
   padding-left: 32rpx;
   padding-right: 32rpx;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  /* 采用grid布局解决最后一行元素对齐 */
+  display: grid;
   justify-content: space-between;
+  grid-template-columns: repeat(auto-fill, 130rpx);
+  grid-gap: 15rpx;
 }
 
 .container .button-view .button-item{

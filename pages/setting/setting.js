@@ -74,32 +74,33 @@ Page({
   },
 
   /**
-   * 删除指令
+   * 重置指令
    */
   removeOrder: function () {
     let orders = wx.getStorageSync('order') || [];
+    console.log("orders:", orders)
     if (orders.length <= 0) {
       wx.showModal({
         title: '错误提示',
-        content: '本地没有可供清空的指令'
+        content: '本地没有可供重置的指令'
       })
       return
     }
     wx.showModal({
-      title: '清空确认',
-      content: '您确认要清空所有指令么？',
+      title: '重置确认',
+      content: '您确认要重置所有指令么？',
       success: function (res) {
         if (res.confirm) {
           try {
               wx.clearStorageSync();
               wx.showModal({
                 title: '操作提示',
-                content: '指令清除成功'
+                content: '指令重置成功'
               })
           } catch (e) {
             wx.showModal({
               title: '错误提示',
-              content: '清空指令失败，请稍后重试'
+              content: '清空重置失败，请稍后重试'
             })
           }
         }
