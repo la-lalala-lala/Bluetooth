@@ -220,8 +220,6 @@ Page({
         if (form.touchend !== ''){
           form.touchend = _this.transformHex(form.touchend)
         }
-        console.log("1:", form.touchstart)
-        console.log("2:", _this.transformHex(form.touchstart))
         form.touchstart = _this.transformHex(form.touchstart)
         // 写入
         orders[nowIndex] = Object.assign({}, form)
