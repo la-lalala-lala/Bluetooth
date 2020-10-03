@@ -1,25 +1,33 @@
-// pages/home/home.js
+// pages/home/index.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    // 蓝牙适配器是否可用
+    // 动画数据
+    animationData: null,
+    // 是否显示蓝牙搜索modal
+    blueModal: false,
+    // 蓝牙适配器开关
     isbluetoothready: false,
     // 蓝牙适配器是否处于搜索状态
     searchingstatus: false,
     // 已发现的设备
     devices: [],
     // 已连接的设备信息
-    ble: {}
+    ble: {},
+    // 蓝牙设置连接状态，只用于显示连接中显示loading，无其他实意
+    bleConnectionStatus:false,
+    // 数据发送状态，只用于显示发送数据中显示loading，无其他实意
+    sendDataStatus:false,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    //this.initBluetooth()
+
   },
 
   /**
@@ -72,8 +80,80 @@ Page({
 
   },
 
+
+
   /**
-   * 切换蓝牙适配器
+   * 显示遮罩层
+   * @param {*} e 
+   */
+  showBlueModal:function(e){
+    if (this.data.blueModal == false) {
+      this.animationModal()
+    } else {
+      this.hideBlueModal()
+    }
+  },
+
+  /**
+   * 动画函数
+   * @param {*} e 
+   */
+  animationModal: function (e) {
+    // 用that取代this，防止不必要的情况发生
+    var that = this;
+    // 创建一个动画实例
+    var animation = wx.createAnimation({
+      // 动画持续时间
+      duration: 500,
+      // 定义动画效果，当前是匀速
+      timingFunction: 'linear'
+    })
+    // 将该变量赋值给当前动画
+    that.animation = animation
+    // 先在y轴偏移，然后用step()完成一个动画
+    animation.translateX(1000).step()
+    // 用setData改变当前动画
+    that.setData({
+      // 通过export()方法导出数据
+      animationData: animation.export(),
+      // 改变view里面的Wx：if
+      blueModal: true
+    })
+    // 设置setTimeout来改变y轴偏移量，实现有感觉的滑动 滑动时间
+    setTimeout(function () {
+      animation.translateX(0).step()
+      that.setData({
+        animationData: animation.export(),
+        clearcart: false
+      })
+    }, 100)
+  },
+  /**
+   * 隐藏
+   * @param {*} e 
+   */
+  hideBlueModal: function (e) {
+    var that = this;
+    var animation = wx.createAnimation({
+      duration: 500,
+      timingFunction: 'linear'
+    })
+    that.animation = animation
+    animation.translateX(700).step()
+    that.setData({
+      animationData: animation.export()
+    })
+    setTimeout(function () {
+      animation.translateX(0).step()
+      that.setData({
+        animationData: animation.export(),
+        blueModal: false
+      })
+    }, 500)
+  },
+
+  /**
+   * 打开/关闭 蓝牙适配器(页面按钮触发)
    */
   switchBlueTooth: function () {
     var that = this
@@ -93,7 +173,7 @@ Page({
   },
 
   /**
-   * 关闭连接状态
+   * 关闭连接状态(页面按钮触发)
    */
   switchConnection: function (){
     var that = this;
@@ -105,93 +185,9 @@ Page({
   },
 
   /**
-   * 初始化连接
+   *开启蓝牙搜索(页面按钮触发)
    */
-  initBluetooth: function (){
-    let that = this
-    // 初始化蓝牙模块，获取适配器
-    wx.openBluetoothAdapter({
-      success: function (res) {
-        console.log('初始化蓝牙适配器成功' + JSON.stringify(res))
-        that.msg = '初始化蓝牙适配器成功'
-        wx.showModal({
-          title: '蓝牙适配情况',
-          content: '初始化蓝牙适配器成功'
-        })
-        // 监听蓝牙适配器状态变化事件
-        wx.onBluetoothAdapterStateChange(function (res) {
-          console.log("蓝牙适配器状态变化", res)
-          if (res.available === false) {
-            // 蓝牙不可用
-            // 断开连接
-            that.closeConnection()
-            // 关闭适配器
-            that.closeAdapter()
-            that.setData({
-              devices: [],
-              isbluetoothready: res.available,
-              searchingstatus: res.discovering
-            })
-          } else {
-            // 蓝牙可用
-            that.setData({
-              isbluetoothready: res.available,
-              searchingstatus: res.discovering
-            })
-          }
-        })
-        // 监听寻找的新设备
-        // 安卓下部分机型需要有位置权限才能搜索到设备，需留意是否开启了位置权限
-        wx.onBluetoothDeviceFound(function (devices) {
-          let _device = that.data.devices
-          _device.push(...devices.devices)
-          that.setData({
-            devices: _device
-          })
-          //name 蓝牙设备名称，某些设备可能没有
-          //deviceId	用于区分设备的id
-          console.log('监听到有新设备')
-          console.log(devices)
-        })
-        // 接收数据的方法wx.onBLECharacteristicValueChange
-      },
-      fail: function () {
-        that.msg = '初始化蓝牙适配器失败'
-        that.setData({
-          isbluetoothready: false,
-          searchingstatus: false
-        })
-        wx.showModal({
-          title: '蓝牙适配情况',
-          content: '蓝牙适配失败，请检查手机蓝牙和定位功能是否打开'
-        })
-      },
-      complete: function () {
-        // 适配器初始化完成后，赋予初始值
-        wx.getBluetoothAdapterState({
-          success(res) {
-            let { available, discovering, errMsg } = res
-            that.setData({
-              isbluetoothready: res.available,
-              searchingstatus: res.discovering
-            })
-          }, 
-          fail: function () {
-            that.setData({
-              isbluetoothready: false,
-              searchingstatus: false
-            })
-          }
-        })
-        console.log('初始化蓝牙适配器完成')
-      }
-    })
-  },
-
-  /**
-   *开启蓝牙搜索
-   */
-  startSearch: function (e) {
+  openSearch: function (e) {
     //console.log(e.detail.value)
     let _this = this
     // 搜索前，必须判断适配器是否可用。获取本机适配状态
@@ -253,57 +249,131 @@ Page({
     })
   },
 
-  // 关闭蓝牙
-  closeAdapter: function() {
+  /**
+   * 按下事件
+   */
+  mytouchstart: function (e) {
     let _this = this
-    // 及时关闭蓝牙
-    wx.closeBluetoothAdapter({
-      success(res) {
-        console.log("关闭蓝牙适配器成功" + JSON.stringify(res))
-        _this.setData({
-          isbluetoothready: false,
-          searchingstatus: false,
-          devices: [],
-          ble:{}
-        })
-      },
-      fail(res) {
-        console.log("关闭蓝牙适配器失败" + JSON.stringify(res))
-      },
-      complete(res) {
-        console.log("关闭蓝牙适配器结束")
-        wx.showModal({
-          title: '提示',
-          content: '请检查手机蓝牙是否打开',
-        })
-      }
-    })
-    console.log("closeAdapter执行完毕")
+    const command = e.target.dataset.touchstart
+    if (command === null || command === ''){
+      wx.showModal({
+        title: '错误提示',
+        content: '您还没有设置该按钮按下发送指令，请在设置->修改指令页面设置'
+      })
+    }else{
+      console.log(command)
+      // 16进制
+      _this.sendMy(_this.string2buffer(command))
+     // _this.sendMy(_this.string2buffer("0x01"))
+    }
   },
 
   /**
-   * 关闭蓝牙连接
+   * 松开事件
    */
-  closeConnection: function() {
-    var that = this;
-    let ble = that.data.ble
-    if (ble.deviceId != null){
-      wx.closeBLEConnection({
-        deviceId: ble.deviceId,
-        complete: function (res) {
-          console.log("断开蓝牙连接")
-          // 清除存储的连接信息
-          wx.setStorageSync('ble', {});
-          that.setData({
-            ble: {}
-          })
-        }
+  mytouchend: function (e) {
+    let _this = this
+    const command = e.target.dataset.touchend
+    if (command !== null && command !== '') {
+      // 设置了，可以发送
+      // this.sendMy(this.string2buffer('0xAB'))
+      //console.log(2)
+      // 16进制
+      _this.sendMy(_this.string2buffer(command))
+    } else{
+      wx.showModal({
+        title: '错误提示',
+        content: '您还没有设置该按钮按下发送指令，松开指令不能发送'
       })
     }
   },
 
   /**
-  * 获取搜索到的设备信息
+   * 初始化连接
+   */
+  initBluetooth: function (){
+    let that = this
+    // 初始化蓝牙模块，获取适配器
+    wx.openBluetoothAdapter({
+      success: function (res) {
+        console.log('初始化蓝牙适配器成功' + JSON.stringify(res))
+        that.msg = '初始化蓝牙适配器成功'
+        wx.showModal({
+          title: '蓝牙适配情况',
+          content: '初始化蓝牙适配器成功'
+        })
+        // 监听蓝牙适配器状态变化事件
+        wx.onBluetoothAdapterStateChange(function (res) {
+          console.log("蓝牙适配器状态变化", res)
+          if (res.available === false) {
+            // 蓝牙不可用
+            // 断开连接
+            that.closeConnection()
+            // 关闭适配器
+            that.closeAdapter()
+            that.setData({
+              devices: [],
+              isbluetoothready: res.available,
+              searchingstatus: res.discovering
+            })
+          } else {
+            // 蓝牙可用
+            that.setData({
+              isbluetoothready: res.available,
+              searchingstatus: res.discovering
+            })
+          }
+        })
+        // 监听寻找到新设备的事件
+        // 安卓下部分机型需要有位置权限才能搜索到设备，需留意是否开启了位置权限
+        wx.onBluetoothDeviceFound(function (devices) {
+          let _device = that.data.devices
+          _device.push(...devices.devices)
+          that.setData({
+            devices: _device
+          })
+          //name 蓝牙设备名称，某些设备可能没有
+          //deviceId	用于区分设备的id
+          console.log('监听到有新设备')
+          console.log(devices)
+        })
+        // 接收数据的方法wx.onBLECharacteristicValueChange
+      },
+      fail: function () {
+        that.msg = '初始化蓝牙适配器失败'
+        that.setData({
+          isbluetoothready: false,
+          searchingstatus: false
+        })
+        wx.showModal({
+          title: '蓝牙适配情况',
+          content: '蓝牙适配失败，请检查手机蓝牙和定位功能是否打开'
+        })
+      },
+      complete: function () {
+        // 适配器初始化完成后，赋予初始值
+        wx.getBluetoothAdapterState({
+          success(res) {
+            let { available, discovering, errMsg } = res
+            that.setData({
+              isbluetoothready: res.available,
+              searchingstatus: res.discovering
+            })
+          }, 
+          fail: function () {
+            that.setData({
+              isbluetoothready: false,
+              searchingstatus: false
+            })
+          }
+        })
+        console.log('初始化蓝牙适配器完成')
+      }
+    })
+  },
+
+  /**
+  * 获取在蓝牙模块生效期间所有已发现的蓝牙设备
   */
   getBlue: function() {
     var that = this
@@ -321,12 +391,16 @@ Page({
     })
   },
 
-  //连接设备
+  /**
+   * 连接低功耗蓝牙设备
+   * @param {*} e 
+   */
   connectDevice: function (e) {
     // 为了防止重复连接，连接前必须要判断
     let that = this;
     // 获取切换前的设备状态
     let ble = that.data.ble;
+    // 当前处于连接中
     if (Object.keys(ble).length !== 0) {
       if (e.currentTarget.dataset.deviceid === ble.deviceId){
         wx.showModal({
@@ -340,8 +414,11 @@ Page({
         })
       }
     }else{
-      wx.showLoading({
-        title: '连接蓝牙设备中...',
+      // wx.showLoading({
+      //   title: '连接蓝牙设备中...',
+      // })
+      that.setData({
+        bleConnectionStatus:true
       })
       wx.createBLEConnection({
         deviceId: e.currentTarget.dataset.deviceid,
@@ -363,6 +440,8 @@ Page({
             title: '设备连接完毕',
             content: '连接成功'
           })
+          // 关闭当前弹窗
+          that.hideBlueModal()
           //获取蓝牙设备所有服务
           that.getServiceId()
         },
@@ -373,7 +452,10 @@ Page({
           })
         },
         complete: function () {
-          wx.hideLoading()
+          //wx.hideLoading()
+          that.setData({
+            bleConnectionStatus:false
+          })
         }
       })
     }
@@ -455,6 +537,7 @@ Page({
         wx.onBLECharacteristicValueChange(function (res) {
         // 此时可以拿到蓝牙设备返回来的数据是一个ArrayBuffer类型数据，所以需要通过一个方法转换成字符串
           var hex = that.ab2hex(res.value)
+          console.log("receive data:",hex)
         })
       }
     })
@@ -464,27 +547,99 @@ Page({
    * 发送数据
    */
   sendMy(buffer) {
-    var that = this
-    let ble = that.data.ble
-    wx.writeBLECharacteristicValue({
-      // 这里的 deviceId 需要在上面的 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
-      deviceId: ble.deviceId,
-      // 这里的 serviceId 需要在上面的 getBLEDeviceServices 接口中获取
-      serviceId: ble.services,
-      // 这里的 characteristicId 需要在上面的 getBLEDeviceCharacteristics 接口中获取
-      characteristicId: ble.writeId,//第二步写入的特征值
-      // 这里的value是ArrayBuffer类型
-      value: buffer,
-      success: function (res) {
-        console.log("写入成功")
+    var that = this;
+    // 发送前校验蓝牙连接是否就绪
+    let ble = wx.getStorageSync('ble')
+    if (Object.keys(ble).length !== 0) {
+      console.log("send data:",buffer)
+      that.setData({
+        sendDataStatus:true
+      })
+      wx.writeBLECharacteristicValue({
+        // 这里的 deviceId 需要在上面的 getBluetoothDevices 或 onBluetoothDeviceFound 接口中获取
+        deviceId: ble.deviceId,
+        // 这里的 serviceId 需要在上面的 getBLEDeviceServices 接口中获取
+        serviceId: ble.serviceId,
+        // 这里的 characteristicId 需要在上面的 getBLEDeviceCharacteristics 接口中获取
+        characteristicId: ble.writeId,//第二步写入的特征值
+        // 这里的value是ArrayBuffer类型
+        value: buffer,
+        success: function (res) {
+          console.log("send data success")
+        },
+        fail: function (res) {
+          // 清除存储的连接信息
+          wx.setStorageSync('ble', {});
+          wx.showModal({
+            title: '发送数据失败',
+            content: res.errMsg
+          })
+          console.log("send data fail",res)
+        },
+        complete: function () {
+          console.log("send data complete")
+          that.setData({
+            sendDataStatus:false
+          })
+        }
+      })
+    }else{
+      wx.showModal({
+        title: '发送数据失败',
+        content: '请连接蓝牙设备后再发送数据'
+      })
+    }
+  },
+
+  /**
+   * 关闭蓝牙模块
+   */
+  closeAdapter: function() {
+    let _this = this
+    // 及时关闭蓝牙
+    wx.closeBluetoothAdapter({
+      success(res) {
+        console.log("关闭蓝牙适配器成功" + JSON.stringify(res))
+        _this.setData({
+          isbluetoothready: false,
+          searchingstatus: false,
+          devices: [],
+          ble:{}
+        })
       },
-      fail: function () {
-        console.log('写入失败')
+      fail(res) {
+        console.log("关闭蓝牙适配器失败" + JSON.stringify(res))
       },
-      complete: function () {
-        console.log("调用结束");
+      complete(res) {
+        console.log("关闭蓝牙适配器结束")
+        wx.showModal({
+          title: '提示',
+          content: '请检查手机蓝牙是否打开',
+        })
       }
     })
+    console.log("closeAdapter执行完毕")
+  },
+
+  /**
+   * 断开与低功耗蓝牙设备的连接
+   */
+  closeConnection: function() {
+    var that = this;
+    let ble = that.data.ble
+    if (ble.deviceId != null){
+      wx.closeBLEConnection({
+        deviceId: ble.deviceId,
+        complete: function (res) {
+          console.log("断开蓝牙连接")
+          // 清除存储的连接信息
+          wx.setStorageSync('ble', {});
+          that.setData({
+            ble: {}
+          })
+        }
+      })
+    }
   },
 
   /**
@@ -520,5 +675,6 @@ Page({
     return hexArr.join('');
   },
 
-  
+
+
 })

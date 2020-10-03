@@ -1,0 +1,359 @@
+/* pages/home/index.wxss */
+
+/* 顶部发送数据loading开始 */
+.send-data-loading{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3rem;
+  height: 3rem;
+  z-index: 50;
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.send-data-loading>image{
+  width: 2.6rem;
+  height: 2.6rem;
+}
+/* 顶部发送数据loading结束*/
+
+/* 手柄按键通用样式开始 */
+.pie{
+  position: relative;
+  margin: 1em auto;
+  padding: 0;
+  border-radius: 50%;
+  list-style: none;
+  overflow: hidden;
+}
+
+.slice {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 100%;
+}
+
+.slice-one {
+  transform: rotate(45deg) skewY(0deg);
+}
+
+.slice-two {
+  transform: rotate(135deg) skewY(-0deg);
+}
+
+.slice-three {
+  transform: rotate(225deg) skewY(0deg);
+}
+
+.slice-four {
+  transform: rotate(315deg) skewY(0deg);
+}
+
+.slice-color-style1{
+  background-color: #f7eded;
+}
+
+.slice-color-style2{
+  background-color: #dedede;
+}
+/* 手柄按键通用样式开始 */
+
+/* 控制中心开始 */
+.operation-view{
+  width: -webkit-fill-available;
+  height: 70vh;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* 上部控制面板开始 */
+.operation-top{
+  flex: 1;
+  width: fill-available;
+  width: -webkit-fill-available;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* 方向操作开始 */
+.operation-direction{
+  height: 100%;
+  width: 35%;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 方向按键组合开始 */
+.operation-direction-group{
+  width: 40vh;
+  height: 40vh;
+}
+/* 方向按键组合结束 */
+/* 方向操作结束 */
+
+/* 仪表盘开始 */
+.operation-info{
+  height: 100%;
+  flex: 1;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.operation-info-group{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 0.8rem;
+  width: fit-content;
+}
+
+.operation-info-group>view{
+  height: 1.3rem;
+  width: 10rem;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.operation-info-group>view>text{
+  font-weight: 700;
+}
+
+/* 仪表盘结束 */
+
+/* 档位操作开始 */
+.operation-gear{
+  height: 100%;
+  width: 35%;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+/* 档位按键组合开始 */
+.operation-gear-group{
+  width: 40vh;
+  height: 40vh;
+}
+/* 档位按键组合结束 */
+/* 档位操作结束 */
+/* 上部控制面板结束 */
+
+/* 底部控制面板开始 */
+.operation-bottom{
+  width: fill-available;
+  width: -webkit-fill-available;
+  height: fit-content;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 0.8rem;
+}
+
+.operation-bottom>div{
+  margin-left: 1rem;
+}
+
+/* 底部控制面板结束 */
+
+/* 控制中心结束 */
+
+/* 配置中心开始 */
+.config-view{
+  flex: 1;
+  width: -webkit-fill-available;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content:space-between;
+  font-size: 0.8rem;
+}
+
+/* 设置标题栏目通用行 */
+.config-title{
+  font-size: 0.9rem;
+  padding-left: 0.5rem;
+  border-left:0.2rem solid #dedede;
+}
+
+/* 设置面板通用行 */
+.config-line{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content:space-between;
+}
+
+/* 设置面板通用text */
+.config-view text::after{
+  margin-left: 0.2rem;
+  content: ">";
+}
+
+/* 蓝牙设置开始 */
+.blue-config{
+  width: 50%;
+  padding: 0.2rem 1rem 1rem 1rem;
+}
+
+/* 蓝牙设置结束 */
+
+/* 指令设置开始 */
+.command-config{
+  width: 50%;
+  padding: 1rem;
+  padding: 0.2rem 1rem 1rem 1rem;
+}
+
+.command-config-line{
+  margin-top: 0.3rem;
+}
+/* 指令设置结束 */
+/* 配置中心结束 */
+
+/* 蓝牙连接弹出层开始 */
+/* 遮罩 */
+.shadow{
+  width: 100%;
+  height: 100%;
+  z-index: 90;
+  position: absolute;
+  top: 0;
+  background-color: #000;
+  opacity: 0.5;
+}
+/* 左滑宽度 */
+.choosen{
+  width: 40vw;
+  height:-webkit-fill-available;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: #ededed;
+  z-index: 98;
+}
+/* 内容 */
+.modal-container {
+  height: 100%;
+  width: 100%;
+  z-index: 98;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: 0.8rem;
+}
+.modal-container-head{
+  width: -webkit-fill-available;
+  font-size: 0.9rem;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0rem 1rem 0rem 1rem;
+}
+
+.modal-container-title{
+  padding-left: 0.5rem;
+  border-left: 0.2rem solid #f7eded;
+}
+
+.discovery-loading{
+  width: 2rem;
+  height: 2rem;
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.discovery-loading>image{
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.discovery-control{
+  padding: 0rem 1rem 0rem 1rem;
+  width: -webkit-fill-available;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.discovery-list{
+  width: -webkit-fill-available;
+  font-size: 0.8rem;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 1rem;
+}
+
+.discovery-item{
+  width: -webkit-fill-available;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.discovery-item>label{
+  width: 1.8rem;
+  height: 1.8rem;
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  margin-right: 0.5rem;
+}
+
+.discovery-item>label>image{
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.discovery-item>view{
+  flex: 1;
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* 蓝牙连接弹出层结束 */

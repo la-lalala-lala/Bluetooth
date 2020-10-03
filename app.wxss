@@ -1,31 +1,28 @@
-page {
-  background-color: #ebebe4;
-}
-page,view,scroll-view,image,text,navigator,swiper,swiper-item{
-  box-sizing: border-box;
-  padding:0;
-  margin:0;
-  font-family:"Microsoft YaHei";
-}
- 
+/**app.wxss**/
 .container {
-  height: 100%;
+  min-height: fill-available;
+  min-height: -webkit-fill-available;
+  height: 100vh;
+  min-width: fill-available;
+  min-width: -webkit-fill-available;
+  width: 100vw;
+  display: -webkit-flex; /* Safari */
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  box-sizing: border-box;
+  color: #323233;
+  font-size: 26rpx;
 } 
 
-.loadmore{
-  font-size: 30rpx;
-  color: #585d86;
-  text-align: center;
+page{
+  background-color: #ededed;
 }
-.not_data{
-  text-align: center;
-  font-size: 30rpx;
-  color: #585d86;
-  margin-top: 300rpx;
-}
-.not_data image{
-  width: 82rpx;
-  height: 94rpx;
+
+/* 改写微信自带switch大小 */
+.mini-switch{
+  /* zoom:.6; */
+  transform: scale(.6)
 }

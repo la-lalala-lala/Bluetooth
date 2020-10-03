@@ -1,41 +1,15 @@
 {
   "pages": [
-    "pages/home/home",
-    "pages/setting/setting",
-    "pages/keyboard/keyboard",
-    "pages/order/order"
+    "pages/home/index"
   ],
   "window": {
+    "pageOrientation": "landscape",
+    "navigationBarBackgroundColor": "#ededed",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "蓝牙控制终端",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#ebebe4",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
+    "backgroundColor": "#ededed"
   },
-  "tabBar": {
-    "color": "#5e72ed",
-    "selectedColor": "#ccc",
-    "borderStyle": "black",
-    "backgroundColor": "#ebebe4",
-    "list": [
-      {
-        "selectedIconPath": "/resources/tabar/Home.png",
-        "iconPath": "/resources/tabar/Home.png",
-        "pagePath": "pages/home/home",
-        "text": "连接"
-      },
-      {
-        "selectedIconPath": "/resources/tabar/Map.png",
-        "iconPath": "/resources/tabar/Map.png",
-        "pagePath": "pages/keyboard/keyboard",
-        "text": "调试"
-      },
-      {
-        "selectedIconPath": "/resources/tabar/Setting.png",
-        "iconPath": "/resources/tabar/Setting.png",
-        "pagePath": "pages/setting/setting",
-        "text": "设置"
-      }
-    ]
-  },
+  "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

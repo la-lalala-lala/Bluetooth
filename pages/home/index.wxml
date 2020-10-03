@@ -1,0 +1,150 @@
+<!--pages/home/index.wxml-->
+<view class="container">
+  <!-- 控制中心开始 -->
+  <view class="operation-view">
+    <!-- 上部控制面板开始 -->
+    <view class="operation-top">
+      <!-- 方向操作开始 -->
+      <view class="operation-direction">
+        <!-- 方向按键组合开始 -->
+        <ul class="operation-direction-group pie">
+          <li class="slice-one slice slice-color-style1"/>
+          <li class="slice-two slice slice-color-style2"/>
+          <li class="slice-three slice slice-color-style1" bindtouchstart="mytouchstart" bindtouchend="mytouchend" data-touchstart='{{"0x01"}}' data-touchend='{{"0x00"}}'/>
+          <li class="slice-four slice slice-color-style2"/>
+        </ul>
+        <!-- 方向按键组合结束 -->
+      </view>
+      <!-- 方向操作结束 -->
+
+      <!-- 仪表盘开始 -->
+      <view class="operation-info">
+        <view class="operation-info-group">
+          <view>
+            <label>运行状态</label>
+            <text>运行中</text>
+          </view>
+          <view>
+            <label>当前功率</label>
+            <text>23w</text>
+          </view>
+          <view>
+            <label>通过电流</label>
+            <text>1A</text>
+          </view>
+          <view>
+            <label>运行电压</label>
+            <text>12v</text>
+          </view>
+          <view>
+            <label>环境湿度</label>
+            <text>12</text>
+          </view>
+          <view>
+            <label>环境温度</label>
+            <text>23</text>
+          </view>
+        </view>
+      </view>
+      <!-- 仪表盘结束 -->
+
+      <!-- 档位操作开始 -->
+      <view class="operation-gear">
+        <!-- 档位按键组合开始 -->
+        <ul class="operation-gear-group pie">
+          <li class="slice-one slice slice-color-style2"/>
+          <li class="slice-two slice slice-color-style1"/>
+          <li class="slice-three slice slice-color-style2"/>
+          <li class="slice-four slice slice-color-style1"/>
+        </ul>
+        <!-- 档位按键组合结束 -->
+      </view>
+      <!-- 档位操作结束 -->
+    </view>
+    <!-- 上部控制面板结束 -->
+    <!-- 底部控制面板开始 -->
+    <view class="operation-bottom">
+      <div>
+        启动:
+        <switch class="mini-switch" color="#f7eded" checked="{{true}}"/>
+      </div>
+      <div>
+        紧急灯:
+        <switch class="mini-switch" color="#f7eded" checked="{{true}}"/>
+      </div>
+    </view>
+    <!-- 底部控制面板结束 -->
+  </view>
+  <!-- 控制中心结束 -->
+
+  <!-- 配置中心开始 -->
+  <view class="config-view">
+    <!-- 蓝牙配置开始 -->
+    <view class="blue-config">
+      <view class="config-title">蓝牙连接设置</view>
+      <view class="config-line">
+        <label>蓝牙适配器</label>
+        <switch class="mini-switch" color="#f7eded" checked="{{isbluetoothready}}" bindchange="switchBlueTooth"/>
+      </view>
+      <view class="config-line">
+        <label>搜索蓝牙</label>
+        <text bindtap="showBlueModal">{{ble.deviceId?ble.deviceId:'搜索'}}</text>
+      </view>
+      <view class="config-line">
+        <label>断开连接</label>
+        <switch class="mini-switch" disabled="{{ble.connectionStatus?false:true}}" color="#f7eded" checked="{{ble.connectionStatus}}"  bindchange='switchConnection'/>
+      </view>
+    </view>
+    <!-- 蓝牙设置结束 -->
+    <!-- 指令设置开始 -->
+    <view class="command-config">
+      <view class="config-title">指令下发设置</view>
+      <view class="config-line command-config-line">
+          <label>修改指令</label>
+          <text></text>
+        </view>
+        <view class="config-line command-config-line">
+          <label>清空指令</label>
+          <text></text>
+        </view>
+    </view>
+    <!-- 指令设置结束 -->
+  </view>
+  <!-- 配置中心结束 -->  
+</view>
+
+<view class="send-data-loading" style="visibility:{{sendDataStatus?'visible':'hidden'}}">
+  <image src="/resources/img/loading.svg"/>
+</view>
+
+<!-- 蓝牙搜索弹框开始 -->
+<!-- 遮罩层 -->
+<view class="shadow" wx:if="{{blueModal}}" bindtap='hideBlueModal'></view>
+<!-- 上滑高度 -->
+<view class='choosen' wx:if="{{blueModal}}" animation='{{animationData}}'>
+<!-- 内容 -->
+  <view class="modal-container">
+    <view class="modal-container-head">
+      <label class="modal-container-title">蓝牙设置</label>
+      <label class="discovery-loading">
+        <image style="visibility:{{searchingstatus==true||bleConnectionStatus==true?'visible':'hidden'}}" src="/resources/img/loading.svg"/>
+      </label>
+    </view>
+    <view class="discovery-control">
+      <label>搜索设备</label>
+      <switch class="mini-switch" color="#f7eded" checked="{{searchingstatus}}" bindchange='openSearch' disabled="{{isbluetoothready?false:true}}"/>
+    </view>
+    <view class="discovery-list">
+      <view class="discovery-item" wx:for='{{devices}}' wx:key='{{index}}' wx:for-item="item">
+        <label>
+          <image src="/resources/img/client.svg"/>
+        </label>
+        <view bindtap='connectDevice' data-deviceId='{{item.deviceId}}'>
+          <label>{{item.name}}</label>
+          <label>{{item.deviceId}}</label>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 蓝牙搜索弹框结束 -->
