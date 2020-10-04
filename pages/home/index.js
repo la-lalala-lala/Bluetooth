@@ -21,13 +21,34 @@ Page({
     bleConnectionStatus:false,
     // 数据发送状态，只用于显示发送数据中显示loading，无其他实意
     sendDataStatus:false,
+    // 指令修改状态，为false时，可以正常触发按下和松开事件，为true时，进入修改模式，不能发送指令
+    commandEditStatus:false,
+    // 是否弹出修改指令表单
+    showCommandEditForm:false,
+    // 弹窗表单
+    form:{
+      // 当前正在修改的key
+      key:'',
+      // 按键触发类型
+      type: '',
+      // 触发名
+      name:'',
+      // 按下发送指令
+      touchstart:'',
+      // 松开发送指令
+      touchend:'',
+    },
+    // 初始化默认的命令
+    commands:{}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    // 初始化 
+    let _this = this;
+    _this.initCommand()
   },
 
   /**
@@ -80,7 +101,27 @@ Page({
 
   },
 
-
+  // 初始化显示用户指令集
+  initCommand:function () {
+    // 每次页面展示都会刷新值 
+    let _this = this;
+    try {
+      // 提取用户设置好的的指令集
+      let commands = wx.getStorageSync('commands');
+      if(!commands){
+        // 使用系统默认的
+        commands = wx.getStorageSync('defaultCommands');
+      }
+      _this.setData({commands})
+    } catch (e) {
+      console.log('init command fail:',e)
+      //弹框提示
+      wx.showModal({
+        title: '错误',
+        content: '初始化用户数据失败，请稍后重试'
+      })
+    }
+  },
 
   /**
    * 显示遮罩层
@@ -173,7 +214,7 @@ Page({
   },
 
   /**
-   * 关闭连接状态(页面按钮触发)
+   * 关闭&打开连接状态(页面按钮触发)
    */
   switchConnection: function (){
     var that = this;
@@ -185,7 +226,7 @@ Page({
   },
 
   /**
-   *开启蓝牙搜索(页面按钮触发)
+   *开启&关闭蓝牙搜索(页面按钮触发)
    */
   openSearch: function (e) {
     //console.log(e.detail.value)
@@ -194,8 +235,6 @@ Page({
     wx.getBluetoothAdapterState({
       success(res) {
         let { available, discovering, errMsg } = res
-        console.log("开启&关闭蓝牙搜索")
-        console.log(res)
         if (available == false){
           // 未开启适配器
           _this.setData({
@@ -209,13 +248,13 @@ Page({
         if (available == true && discovering == false) {
           // 蓝牙可用，且当前没有进行搜索 -> 开启搜索
           // 开始搜寻附近的蓝牙外围设备,此过程比较耗费系统资源，在找到设备后，请及时关闭
+          console.log("start search bluetooth devices")
           wx.startBluetoothDevicesDiscovery({
             success: function (res) {
               // 清空之前发现的列表
               _this.setData({
                 devices:[]
               })
-              console.log("开始搜索附近蓝牙设备")
             },
             fail: function (res) {
               wx.showModal({
@@ -230,7 +269,7 @@ Page({
           // 关闭搜索
           wx.stopBluetoothDevicesDiscovery({
             success: function (res) {
-              console.log("停止蓝牙搜索")
+              console.log("stop search bluetooth devices")
               console.log(res)
               _this.getBlue()
             }
@@ -250,42 +289,224 @@ Page({
   },
 
   /**
-   * 按下事件
+   * 进入&退出指令修改模式
+   */
+  editCommandCtrl: function(){
+    let _this = this
+    // 获取当前指令所处的修改模式
+    let commandEditStatus = _this.data.commandEditStatus;
+    if(!commandEditStatus){
+      wx.showToast({
+        title: '进入修改模式中',
+        icon: 'loading',
+        duration: 1000
+      })      
+    }
+    // 状态翻转
+    _this.setData({
+      commandEditStatus: !commandEditStatus,
+    })
+  },
+
+  /**
+   * 重置指令
+   */
+  clearCommand: function () {
+    let _this = this
+    let commands = wx.getStorageSync('commands');
+    if (!commands) {
+      wx.showModal({
+        title: '错误',
+        content: '本地没有可供重置的指令'
+      })
+      return
+    }
+    wx.showModal({
+      title: '重置确认',
+      content: '您确认要重置所有指令么？',
+      success: function (res) {
+        if (res.confirm) {
+          wx.removeStorage({
+            key: 'commands',
+            success (res) {
+              // 重置后,重新初始化
+              _this.initCommand();
+              wx.showToast({
+                title: '重置成功',
+                icon: 'success',
+                duration: 2000
+              })       
+            }
+          })
+        }
+      }
+    })
+  },
+
+  /**
+   * 按下事件发送指令
    */
   mytouchstart: function (e) {
     let _this = this
-    const command = e.target.dataset.touchstart
-    if (command === null || command === ''){
+    // 获取当前指令所处的修改模式
+    let commandEditStatus = _this.data.commandEditStatus;
+    // 当前指令按键处于修改模式，按下和松开事件屏蔽
+    if(commandEditStatus){
+      return
+    }
+    let key = e.target.dataset.key
+    let commands = _this.data.commands
+    let { func,touchstart} = commands[key]
+    if (func === null || func === '' || touchstart === null || touchstart === ''){
       wx.showModal({
         title: '错误提示',
         content: '您还没有设置该按钮按下发送指令，请在设置->修改指令页面设置'
       })
     }else{
-      console.log(command)
+      //console.log(_this.string2buffer(func+touchstart))
       // 16进制
-      _this.sendMy(_this.string2buffer(command))
-     // _this.sendMy(_this.string2buffer("0x01"))
+      _this.sendMy(_this.string2buffer(func+touchstart))
+      // _this.sendMy(_this.string2buffer("0x01"))
     }
   },
 
   /**
-   * 松开事件
+   * 松开事件发送指令
    */
   mytouchend: function (e) {
     let _this = this
-    const command = e.target.dataset.touchend
-    if (command !== null && command !== '') {
-      // 设置了，可以发送
-      // this.sendMy(this.string2buffer('0xAB'))
-      //console.log(2)
-      // 16进制
-      _this.sendMy(_this.string2buffer(command))
-    } else{
+    // 获取当前指令所处的修改模式
+    let commandEditStatus = _this.data.commandEditStatus;
+    // 当前指令按键处于修改模式，按下和松开事件屏蔽
+    if(commandEditStatus){
+      return
+    }
+    let key = e.target.dataset.key
+    let commands = _this.data.commands
+    let { func,touchend} = commands[key]
+    if (func === null || func === '' || touchend === null || touchend === ''){
       wx.showModal({
         title: '错误提示',
         content: '您还没有设置该按钮按下发送指令，松开指令不能发送'
       })
+    } else{
+      //console.log(_this.string2buffer(func+touchend))
+      // 16进制
+      // this.sendMy(this.string2buffer('0xAB'))
+      _this.sendMy(_this.string2buffer(func+touchend))
     }
+  },
+
+  /**
+   * 点击事件发送指令
+   */
+  myclick: function (e){
+    let _this = this
+    // 获取当前指令所处的修改模式
+    let commandEditStatus = _this.data.commandEditStatus;
+    // 当前指令按键处于修改模式，按下和松开事件屏蔽
+    if(commandEditStatus){
+      return
+    }
+    let key = e.target.dataset.key
+    let commands = _this.data.commands
+    let { func,value} = commands[key]
+    if (func === null || func === '' || value === null || value === ''){
+      wx.showModal({
+        title: '错误提示',
+        content: '您还没有设置该按钮按下发送指令，松开指令不能发送'
+      })
+    } else{
+      //console.log(_this.string2buffer(func+touchend))
+      // 16进制
+      // this.sendMy(this.string2buffer('0xAB'))
+      _this.sendMy(_this.string2buffer(func+value))
+    }
+  },
+
+  /**
+   * switch改变事件发送指令
+   */
+  mychange: function(e){
+    let _this = this
+    // 获取当前指令所处的修改模式
+    let commandEditStatus = _this.data.commandEditStatus;
+    // 当前指令按键处于修改模式，按下和松开事件屏蔽
+    if(commandEditStatus){
+      return
+    }
+    let key = e.target.dataset.key
+    let commands = _this.data.commands
+    let { func,high,low} = commands[key]
+    if (func === null || func === '' || high === null || high === '' || low === null || low === ''){
+      wx.showModal({
+        title: '错误提示',
+        content: '您还没有设置该按钮按下发送指令，松开指令不能发送'
+      })
+      return
+    }
+    if (true == e.detail.value){
+      // 打开
+      // this.sendMy(this.string2buffer('0xAB'))
+      _this.sendMy(_this.string2buffer(func+high))
+    }else{
+      // 关闭
+      // this.sendMy(this.string2buffer('0xAB'))
+      _this.sendMy(_this.string2buffer(func+low))
+    }
+  },
+
+  /**
+   * 长按修改指令
+   * @param {}} e 
+   */
+  editCommand:function(e){
+    let _this = this
+    // 获取当前指令所处的修改模式
+    let commandEditStatus = _this.data.commandEditStatus;
+    // 当前指令按键处于非修改模式，长按事件屏蔽
+    if(!commandEditStatus){
+      return
+    }
+    let key = e.target.dataset.key
+    let commands = _this.data.commands
+    let { name,type,touchstart,touchend,high,low,value} = commands[key]
+    let form = {}
+    // 回显之前已设置的值
+    if ('change' === type){
+      // 改变触发
+      form = { 
+        "key": key,
+        "type": type,
+        "name": name, 
+        "touchstart": _this.transformDecimal(high),
+        "touchend": _this.transformDecimal(low)
+      }
+    }else if ( 'click' === type){
+      // 点击触发
+      form = { 
+        "key": key,
+        "type": type,
+        "name": name, 
+        "touchstart": _this.transformDecimal(value),
+        "touchend":''
+      }
+    }else{
+      // 按下&松开触发
+      form = { 
+        "key": key,
+        "type": type,
+        "name": name, 
+        "touchstart": _this.transformDecimal(touchstart), 
+        "touchend": _this.transformDecimal(touchend) 
+      }
+    }
+    _this.setData({
+      form
+    },function(){
+      console.log(e)
+      _this.visibleCommandEditForm()
+    })
   },
 
   /**
@@ -293,18 +514,22 @@ Page({
    */
   initBluetooth: function (){
     let that = this
+    wx.showLoading({
+      title: '正在开启',
+    })
     // 初始化蓝牙模块，获取适配器
     wx.openBluetoothAdapter({
       success: function (res) {
-        console.log('初始化蓝牙适配器成功' + JSON.stringify(res))
-        that.msg = '初始化蓝牙适配器成功'
-        wx.showModal({
-          title: '蓝牙适配情况',
-          content: '初始化蓝牙适配器成功'
+        console.log('init bluetooth adapter success:' + JSON.stringify(res))
+        wx.hideLoading()
+        wx.showToast({
+          title: '开启成功',
+          icon: 'success',
+          duration: 2000
         })
         // 监听蓝牙适配器状态变化事件
         wx.onBluetoothAdapterStateChange(function (res) {
-          console.log("蓝牙适配器状态变化", res)
+          console.log("bluetooth adapter state change:", res)
           if (res.available === false) {
             // 蓝牙不可用
             // 断开连接
@@ -334,19 +559,19 @@ Page({
           })
           //name 蓝牙设备名称，某些设备可能没有
           //deviceId	用于区分设备的id
-          console.log('监听到有新设备')
-          console.log(devices)
+          console.log('discovery a new device:',devices)
         })
         // 接收数据的方法wx.onBLECharacteristicValueChange
       },
-      fail: function () {
-        that.msg = '初始化蓝牙适配器失败'
+      fail: function (res) {
+        console.log('init bluetooth adapter fail:' + JSON.stringify(res))
         that.setData({
           isbluetoothready: false,
           searchingstatus: false
         })
+        wx.hideLoading()
         wx.showModal({
-          title: '蓝牙适配情况',
+          title: '错误',
           content: '蓝牙适配失败，请检查手机蓝牙和定位功能是否打开'
         })
       },
@@ -367,7 +592,7 @@ Page({
             })
           }
         })
-        console.log('初始化蓝牙适配器完成')
+        console.log('init bluetooth adapter complete')
       }
     })
   },
@@ -380,13 +605,13 @@ Page({
     wx.getBluetoothDevices({
       success: function (res) {
         //deviceId 为设备 MAC 地址，iOS 上则为设备 uuid
-        console.log(res)
+        console.log("get all bluetooth devices",res)
         that.setData({
           devices: res.devices
         })
       },
       fail: function () {
-        console.log("搜索蓝牙设备失败")
+        console.log("get all bluetooth devices fail")
       }
     })
   },
@@ -414,9 +639,7 @@ Page({
         })
       }
     }else{
-      // wx.showLoading({
-      //   title: '连接蓝牙设备中...',
-      // })
+      // 显示设备连接loading
       that.setData({
         bleConnectionStatus:true
       })
@@ -436,9 +659,10 @@ Page({
               deviceId: e.currentTarget.dataset.deviceid
             },
           })
-          wx.showModal({
-            title: '设备连接完毕',
-            content: '连接成功'
+          wx.showToast({
+            title: '连接成功',
+            icon: 'success',
+            duration: 2000
           })
           // 关闭当前弹窗
           that.hideBlueModal()
@@ -493,7 +717,7 @@ Page({
       // 这里的 serviceId 需要在上面的 getBLEDeviceServices 接口中获取
       serviceId: ble.serviceId,
       success: function (res) {
-        console.log("特征值"+JSON.stringify(res))
+        console.log("get device characteristics：",JSON.stringify(res))
         for (var i = 0; i < res.characteristics.length; i++) {//2个值
           var model = res.characteristics[i]
           if (model.properties.notify == true) {
@@ -501,7 +725,7 @@ Page({
             that.setData({
               ble
             })
-            wx.setStorageSync('ble', ble);//存储ble
+            //wx.setStorageSync('ble', ble);//存储ble,跨页面传值解决方案
             // 启用 notify 功能
             that.startNotice(model.uuid)//7.0
           }
@@ -510,7 +734,7 @@ Page({
             that.setData({
               ble
             })
-            wx.setStorageSync('ble', ble);//存储ble
+            //wx.setStorageSync('ble', ble);//存储ble,跨页面传值解决方案
           }
         }
       }
@@ -535,9 +759,10 @@ Page({
         // 设备返回的方法
         // 监听低功耗蓝牙设备的特征值变化事件必须先启用wx.notifyBLECharacteristicValueChange
         wx.onBLECharacteristicValueChange(function (res) {
-        // 此时可以拿到蓝牙设备返回来的数据是一个ArrayBuffer类型数据，所以需要通过一个方法转换成字符串
+          // 此时可以拿到蓝牙设备返回来的数据是一个ArrayBuffer类型数据，所以需要通过一个方法转换成字符串
           var hex = that.ab2hex(res.value)
-          console.log("receive data:",hex)
+          console.log("receive data value:",res.value)
+          console.log("receive data hex value:",hex)
         })
       }
     })
@@ -548,8 +773,9 @@ Page({
    */
   sendMy(buffer) {
     var that = this;
-    // 发送前校验蓝牙连接是否就绪
-    let ble = wx.getStorageSync('ble')
+    // 发送前校验蓝牙连接是否就绪 //跨页面传值解决方案
+    let ble = that.data.ble
+    // let ble = wx.getStorageSync('ble')
     if (Object.keys(ble).length !== 0) {
       console.log("send data:",buffer)
       that.setData({
@@ -569,7 +795,7 @@ Page({
         },
         fail: function (res) {
           // 清除存储的连接信息
-          wx.setStorageSync('ble', {});
+          // wx.setStorageSync('ble', {}); //跨页面传值解决方案
           wx.showModal({
             title: '发送数据失败',
             content: res.errMsg
@@ -633,7 +859,7 @@ Page({
         complete: function (res) {
           console.log("断开蓝牙连接")
           // 清除存储的连接信息
-          wx.setStorageSync('ble', {});
+          // wx.setStorageSync('ble', {}); // 跨页面传值解决方案
           that.setData({
             ble: {}
           })
@@ -672,9 +898,130 @@ Page({
         return ('00' + bit.toString(16)).slice(-2)
       }
     )
+    console.log("hexArr",hexArr)
     return hexArr.join('');
   },
 
+  /**
+   * 显示弹框
+   */
+  visibleCommandEditForm:function(){
+    let that = this
+    that.setData({
+      showCommandEditForm:true
+    })
+  },
+
+  /**
+   * 隐藏弹框,并清除现有表单
+   */
+  hiddenCommandEditForm: function () {
+    let that = this
+    that.setData({
+      showCommandEditForm: false,
+      form: { "name": '', "touchstart": '', "touchend": '',"key": '',"type": '',}
+    })
+  },
+
+
+  /**
+   * 确认保存指令
+   */
+  sureSave:function(e){
+    let _this = this
+    const {form,commands} = _this.data
+    let key = form.key
+    // 读出原来存储的值
+    var _form = Object.assign({}, commands[key])
+    try{
+      if ('change' === form.type){
+        // 指令转换成16进制
+        _form.high = _this.transformHex(form.touchstart)
+        _form.low = _this.transformHex(form.touchend)
+      }else if ( 'click' === form.type){
+         // 指令转换成16进制
+         _form.value = _this.transformHex(form.touchstart)
+      }else{
+        // 指令转换成16进制
+        _form.touchstart = _this.transformHex(form.touchstart)
+        _form.touchend = _this.transformHex(form.touchend)
+      }
+      // 写入
+      commands[key] = Object.assign({}, _form)
+      _this.setData({
+        commands
+      })
+      // 持久化保存
+      wx.setStorageSync('commands', commands);
+      _this.hiddenCommandEditForm()
+    }catch(e){
+      console.log("save command fail:",e)
+      wx.showModal({
+        title: '错误',
+        content: '保存指令失败'
+      })
+    }
+  },
+
+  /**
+   * 动态绑定文本框
+   * @param {*} e 
+   */
+  bindInput:function(e){
+    let _this = this
+    let item = e.currentTarget.dataset.item;
+    const form = _this.data.form
+    if (item === 'touchstart' || item === 'touchend'){
+      // 指令框
+      if (e.detail.value.length == 1) {
+        form[item] = e.detail.value.replace(/[^1-9]/g, '') 
+      } else {
+        form[item] = e.detail.value.replace(/\D/g, '')
+      }
+      // 越界
+      if (form[item] > 255 || form[item] < 0) {
+        form[item] = ''
+      }
+    }else{
+      // 非指令框
+      form[item] = (e.detail.value).trim()
+    }
+    _this.setData({
+      form
+    })
+  },
+
+  /**
+   * 10进制转换16进制(10进制必须在0~255区间，转换后形式0x01)
+   * @param {*} num 
+   */
+  transformHex:function(num){
+    if (null === num || '' === num){
+      return '';
+    }
+    // 事先转换成整型
+    num = parseInt(num)
+    if (num > 255 || num < 0){
+      // 越界，返回null
+      return '';
+    }
+    var hex_num = num.toString(16);
+    // 转换后判断hex_num的位数是否为2，不足2的自动补齐
+    var zero = '00';
+    var tmp = 2 - hex_num.length;
+    return '0x' + zero.substr(0, tmp) + hex_num;
+  },
+
+  /**
+   * 16进制转换10进制
+   * @param {*} num 数字字符串
+   */
+  transformDecimal:function(num){
+    if (null === num || '' === num){
+      return '';
+    }
+    return parseInt(num, 16)
+  }
 
 
 })

@@ -8,10 +8,10 @@
       <view class="operation-direction">
         <!-- 方向按键组合开始 -->
         <ul class="operation-direction-group pie">
-          <li class="slice-one slice slice-color-style1"/>
-          <li class="slice-two slice slice-color-style2"/>
-          <li class="slice-three slice slice-color-style1" bindtouchstart="mytouchstart" bindtouchend="mytouchend" data-touchstart='{{"0x01"}}' data-touchend='{{"0x00"}}'/>
-          <li class="slice-four slice slice-color-style2"/>
+          <li class="slice-one slice slice-color-style1" bindtouchstart="mytouchstart" bindtouchend="mytouchend" data-key="RT" bindlongpress="editCommand"/>
+          <li bindtap="myclick" data-key="PL" bindlongpress="editCommand" class="slice-two slice slice-color-style2"/>
+          <li class="slice-three slice slice-color-style1" bindtouchstart="mytouchstart" bindtouchend="mytouchend" data-key="LT" bindlongpress="editCommand"/>
+          <li bindtap="myclick" data-key="HEST" bindlongpress="editCommand" class="slice-four slice slice-color-style2"/>
         </ul>
         <!-- 方向按键组合结束 -->
       </view>
@@ -53,9 +53,9 @@
         <!-- 档位按键组合开始 -->
         <ul class="operation-gear-group pie">
           <li class="slice-one slice slice-color-style2"/>
-          <li class="slice-two slice slice-color-style1"/>
+          <li data-key="R" bindlongpress="editCommand" bindtouchstart="mytouchstart" bindtouchend="mytouchend" class="slice-two slice slice-color-style1"/>
           <li class="slice-three slice slice-color-style2"/>
-          <li class="slice-four slice slice-color-style1"/>
+          <li data-key="D" bindlongpress="editCommand" bindtouchstart="mytouchstart" bindtouchend="mytouchend" class="slice-four slice slice-color-style1"/>
         </ul>
         <!-- 档位按键组合结束 -->
       </view>
@@ -66,11 +66,11 @@
     <view class="operation-bottom">
       <div>
         启动:
-        <switch class="mini-switch" color="#f7eded" checked="{{true}}"/>
+        <switch class="mini-switch" color="#f7eded" data-key="PT" bindchange="mychange" bindlongpress="editCommand" checked="{{false}}"/>
       </div>
       <div>
-        紧急灯:
-        <switch class="mini-switch" color="#f7eded" checked="{{true}}"/>
+        灯光开关:
+        <switch class="mini-switch" color="#f7eded" data-key="LP" bindchange="mychange" bindlongpress="editCommand"  checked="{{false}}"/>
       </div>
     </view>
     <!-- 底部控制面板结束 -->
@@ -101,9 +101,9 @@
       <view class="config-title">指令下发设置</view>
       <view class="config-line command-config-line">
           <label>修改指令</label>
-          <text></text>
+          <switch class="mini-switch" color="#f7eded" bindchange='editCommandCtrl' checked="{{commandEditStatus}}"/>
         </view>
-        <view class="config-line command-config-line">
+        <view class="config-line command-config-line" bindtap="clearCommand">
           <label>清空指令</label>
           <text></text>
         </view>
@@ -148,3 +148,34 @@
   </view>
 </view>
 <!-- 蓝牙搜索弹框结束 -->
+
+<!-- 修改指令弹出层开始 -->
+<!-- 输入弹框 -->
+<view class='toast-box' hidden='{{!showCommandEditForm}}'>
+    <view class='toastbg'></view>
+    <view class='showToast'>
+        <view class='toast-title'>
+            <text>修改指令</text>
+        </view>
+        <view class='toast-main'>
+            <view class='toast-input-line'>
+              <lable>指令名：</lable>
+              <input placeholder='指令名' maxlength="5" bindinput='bindInput' data-item='name' value="{{form.name}}"/>
+            </view>
+            <view class='toast-input-line'>
+                <lable>高电平：</lable>
+                <input type="number" placeholder='按下发送指令值,eg:0x01' maxlength="3" bindinput='bindInput' data-item='touchstart' value="{{form.touchstart}}"/>
+            </view>
+            <view class='toast-input-line'>
+                <lable>低电平：</lable>
+                <input type="number" placeholder='松开发送指令值,eg:0xAB' maxlength="3" bindinput='bindInput' data-item='touchend' value="{{form.touchend}}"/>
+            </view>
+        </view>
+        <view class='toast-button'>
+           <label bindtap="hiddenCommandEditForm">取消</label>
+           <label class="column-line"></label>
+           <label bindtap="sureSave">确定</label>
+        </view>
+    </view>
+</view>
+<!-- 修改指令弹出层结束 -->
