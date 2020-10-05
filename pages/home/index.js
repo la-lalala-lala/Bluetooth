@@ -825,7 +825,7 @@ Page({
     // 及时关闭蓝牙
     wx.closeBluetoothAdapter({
       success(res) {
-        console.log("关闭蓝牙适配器成功" + JSON.stringify(res))
+        console.log("close bluetooth adapter success:" + JSON.stringify(res))
         _this.setData({
           isbluetoothready: false,
           searchingstatus: false,
@@ -834,10 +834,10 @@ Page({
         })
       },
       fail(res) {
-        console.log("关闭蓝牙适配器失败" + JSON.stringify(res))
+        console.log("close bluetooth adapter fail:" + JSON.stringify(res))
       },
       complete(res) {
-        console.log("关闭蓝牙适配器结束")
+        console.log("close bluetooth adapter complete")
         wx.showModal({
           title: '提示',
           content: '请检查手机蓝牙是否打开',
@@ -857,7 +857,7 @@ Page({
       wx.closeBLEConnection({
         deviceId: ble.deviceId,
         complete: function (res) {
-          console.log("断开蓝牙连接")
+          console.log("disconnect bluetooth connection")
           // 清除存储的连接信息
           // wx.setStorageSync('ble', {}); // 跨页面传值解决方案
           that.setData({

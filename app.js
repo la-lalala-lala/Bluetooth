@@ -4,13 +4,13 @@ App({
     // 初始默认的指令
     const  commands = {
       PT:{"name": '点火器',"func":'0x00',"type":'change', "high": '0x01',"low":'0x00'},// 改变时触发
-      LT:{"name": '左转', "func":'0x01',"type":'longpress',"touchstart": '0x01',"touchend":'0x00'},// 按下&松开触发
-      RT:{"name": '右转', "func":'0x01',"type":'longpress',"touchstart": '0x02',"touchend":'0x00'},// 按下&松开触发
-      D:{"name": '前进', "func":'0x02',"type":'longpress',"touchstart": '0x01',"touchend":'0x00'},// 按下&松开触发
-      R:{"name": '后退', "func":'0x02',"type":'longpress',"touchstart": '0x02',"touchend":'0x00'},// 按下&松开触发
-      LP:{"name": '灯光开关', "func":'0x03',"type":'change',"high": '0x01',"low":'0x00'},// 改变时触发
-      HEST:{"name": '前照灯', "func":'0x03',"type":'click',"value":'0x02'},// 点击触发
-      PL:{"name": '停车灯', "func":'0x03',"type":'click',"value":'0x03'}// 点击触发
+      LT:{"name": '左转', "func":'0x02',"type":'longpress',"touchstart": '0x01',"touchend":'0x00'},// 按下&松开触发
+      RT:{"name": '右转', "func":'0x02',"type":'longpress',"touchstart": '0x02',"touchend":'0x00'},// 按下&松开触发
+      D:{"name": '前进', "func":'0x03',"type":'longpress',"touchstart": '0x01',"touchend":'0x00'},// 按下&松开触发
+      R:{"name": '后退', "func":'0x03',"type":'longpress',"touchstart": '0x02',"touchend":'0x00'},// 按下&松开触发
+      LP:{"name": '灯光开关', "func":'0x04',"type":'change',"high": '0x01',"low":'0x00'},// 改变时触发
+      HEST:{"name": '前照灯', "func":'0x04',"type":'click',"value":'0x02'},// 点击触发
+      PL:{"name": '停车灯', "func":'0x04',"type":'click',"value":'0x03'}// 点击触发
     }
     wx.setStorageSync('defaultCommands', commands)
 
