@@ -66,11 +66,11 @@
     <view class="operation-bottom">
       <div>
         启动:
-        <switch class="mini-switch" color="#f7eded" data-key="PT" bindchange="mychange" bindlongpress="editCommand" checked="{{false}}"/>
+        <switch class="mini-switch" color="#f7eded" data-key="PT" bindchange="mychange" bindlongpress="editCommand" checked="{{switchStatus}}"/>
       </div>
       <div>
         灯光开关:
-        <switch class="mini-switch" color="#f7eded" data-key="LP" bindchange="mychange" bindlongpress="editCommand"  checked="{{false}}"/>
+        <switch class="mini-switch" color="#f7eded" data-key="LP" bindchange="mychange" bindlongpress="editCommand"  checked="{{switchStatus}}"/>
       </div>
     </view>
     <!-- 底部控制面板结束 -->
@@ -135,7 +135,7 @@
       <switch class="mini-switch" color="#f7eded" checked="{{searchingstatus}}" bindchange='openSearch' disabled="{{isbluetoothready?false:true}}"/>
     </view>
     <view class="discovery-list">
-      <view class="discovery-item" wx:for='{{devices}}' wx:key='{{index}}' wx:for-item="item">
+      <view class="discovery-item" wx:for='{{devices}}' wx:key='index' wx:for-item="item">
         <label>
           <image src="/resources/img/client.svg"/>
         </label>
@@ -160,7 +160,7 @@
         <view class='toast-main'>
             <view class='toast-input-line'>
               <lable>指令名：</lable>
-              <input placeholder='指令名' maxlength="5" bindinput='bindInput' data-item='name' value="{{form.name}}"/>
+              <input disabled="true" placeholder='指令名' maxlength="5" bindinput='bindInput' data-item='name' value="{{form.name}}"/>
             </view>
             <view class='toast-input-line'>
                 <lable>高电平：</lable>

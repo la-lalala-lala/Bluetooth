@@ -445,7 +445,6 @@
 .toast-box .showToast .toast-button>.column-line{
   height: 1rem;
   width: 0.06rem;
-  height: max-content;
   background-color: #dedede;
 }
 

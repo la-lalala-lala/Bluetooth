@@ -25,6 +25,8 @@ Page({
     commandEditStatus:false,
     // 是否弹出修改指令表单
     showCommandEditForm:false,
+    // 总控开关
+    switchStatus:false,
     // 弹窗表单
     form:{
       // 当前正在修改的key
@@ -201,6 +203,7 @@ Page({
     // 状态翻转
     that.setData({
       isbluetoothready: !that.data.isbluetoothready,
+      switchStatus:false,
     })
     if (that.data.isbluetoothready) {
       // 初始化适配器
@@ -420,6 +423,8 @@ Page({
       //console.log(_this.string2buffer(func+touchend))
       // 16进制
       // this.sendMy(this.string2buffer('0xAB'))
+      console.log("得到的原始指令：",func,value)
+      console.log("封装后的数据：",_this.string2buffer(func+value))
       _this.sendMy(_this.string2buffer(func+value))
     }
   },
@@ -763,6 +768,9 @@ Page({
           var hex = that.ab2hex(res.value)
           console.log("receive data value:",res.value)
           console.log("receive data hex value:",hex)
+          if('01ff'===hex){
+            that.sendMy(that.string2buffer('0x01FF'))
+          }
         })
       }
     })

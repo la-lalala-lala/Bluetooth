@@ -11,11 +11,12 @@
     "newFeature": true,
     "coverView": true,
     "autoAudits": false,
+    "scopeDataCheck": false,
     "checkInvalidKey": true,
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "useMultiFrameRuntime": false,
-    "useApiHook": false,
+    "useApiHook": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
@@ -28,7 +29,7 @@
     "packNpmRelationList": []
   },
   "compileType": "miniprogram",
-  "libVersion": "2.7.7",
+  "libVersion": "2.12.2",
   "appid": "wx839e51cfc26a1d87",
   "projectname": "Bluetooth",
   "debugOptions": {
