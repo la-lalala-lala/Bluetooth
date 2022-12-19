@@ -1,0 +1,211 @@
+<!--pages/board/index.wxml-->
+<!--最外层盒子开始-->
+<view class="container">
+    <!-- 页面标题开始 -->
+    <view class="page-head">
+        <image class="page-head-background" mode="heightFix" src="/resources/img/board_background.png"/>
+        <view>
+          <span class="page-name">
+            控制面板
+          </span>
+          <span class="page-clock">
+            {{clock}}
+          </span>
+            <image bindtap="showSettingModal" class="page-set" src="/resources/img/setting.svg"/>
+        </view>
+    </view>
+    <!-- 页面标题结束-->
+
+    <!-- 控制中心开始 -->
+    <view class="operation-view">
+      <!-- 上部控制面板开始 -->
+      <view class="operation-top">
+          <!-- 方向操作开始 -->
+          <view class="operation-direction">
+              <!-- 方向按键组合开始 -->
+              <ul class="operation-direction-group pie">
+                  <li class="slice-one slice slice-color-style1"/>
+                  <li class="slice-two slice slice-color-style2"/>
+                  <li class="slice-three slice slice-color-style1"/>
+                  <li class="slice-four slice slice-color-style2"/>
+              </ul>
+              <!-- 方向按键组合结束 -->
+          </view>
+          <!-- 方向操作结束 -->
+
+          <!-- 仪表盘开始 -->
+          <view class="operation-info">
+              <view class="operation-info-group">
+                  <view class="project-name">
+                      <!-- 设备控制面板 -->
+                  </view>
+              </view>
+          </view>
+          <!-- 仪表盘结束 -->
+
+          <!-- 档位操作开始 -->
+          <view class="operation-gear">
+              <!-- 档位按键组合开始 -->
+              <ul class="operation-gear-group pie">
+                  <li class="slice-one slice slice-color-style2"/>
+                  <li class="slice-two slice slice-color-style1"/>
+                  <li class="slice-three slice slice-color-style2"/>
+                  <li class="slice-four slice slice-color-style1"/>
+              </ul>
+              <!-- 档位按键组合结束 -->
+          </view>
+          <!-- 档位操作结束 -->
+      </view>
+      <!-- 上部控制面板结束 -->
+
+      <!-- 底部控制面板开始 -->
+      <view class="operation-bottom">
+        <view class="ctrl-item">
+            <span class="ctrl-item-label">电源:</span>
+            <view class="ctrl-item-element">
+                <switch class="mini-switch" color="#163c87" disabled="{{ble.connectionStatus?false:true}}" data-key="PT" bindchange="mychange" checked="{{ble.powerSwitch}}"/>
+            </view>
+        </view>
+        <view class="ctrl-item">
+            <span class="ctrl-item-label">驱动:</span>
+            <view class="ctrl-item-element">
+                <switch class="mini-switch" color="#163c87" disabled="{{ble.powerSwitch?false:true}}" data-key="DT" bindchange="mychange" checked="{{ble.driverSwitch}}"/>
+            </view>
+        </view>
+      </view>
+      <!-- 底部控制面板结束 -->
+    </view>
+    <!-- 控制中心结束 -->
+
+    <!-- 看板区域开始 -->
+    <view class="board-view">
+        <view class="table">
+            <view class="table-head">
+                <view class="td">蓝牙名</view>
+                <view class="td">通信状态</view>
+                <view class="td">启动状态</view>
+                <view class="td">心跳时间</view>
+                <view class="td">总电压</view>
+                <view class="td-end">总电流</view>
+            </view>
+            <view class="table-body">
+                <view class="td">{{''==ble.name?'未命名':ble.name}}</view>
+                <view class="td">{{ble.connectionStatus?'已连接':'已断开'}}</view>
+                <view class="td">-</view>
+                <view class="td">-</view>
+                <view class="td">-</view>
+                <view class="td-end">-</view>
+            </view>
+        </view>
+    </view>
+    <!-- 看板区域结束 -->
+
+
+  <!-- 遮罩层 -->
+  <view class="shadow" wx:if="{{settingModal}}"></view>
+  <!-- 弹窗开始 -->
+  <view class='choosen' wx:if="{{settingModal}}" animation='{{animationData}}'>
+    <!-- 内容开始 -->
+    <view class="modal-container">
+      <view class="setting-header">
+        <image bindtap="hideSettingModal" class="modal-close" src="/resources/img/close.svg"/>
+        <span>设置</span>
+        <span></span>
+      </view>
+      <view class="setting-sys-title">
+        <text>连接设置</text>
+      </view>
+      <view class="setting-sys-ctrl">
+        <label>蓝牙适配器:</label>
+        <switch class="mini-switch" color="#163c87" checked="{{isbluetoothready}}" bindchange="switchBlueTooth"/>
+      </view>
+      <view class="setting-main">
+        <view class="setting-main-blu">
+          <view class="setting-main-blu-title">
+            <text>连接设置</text>
+          </view>
+          <view class="setting-main-blu-tools">
+            <view class="search-power">
+              <label>蓝牙搜索:</label>
+              <switch class="mini-switch" color="#163c87" checked="{{searchingstatus}}" bindchange='openSearch' disabled="{{isbluetoothready?false:true}}"/>
+            </view>
+            <view class="blu-connect">
+              <label>蓝牙连接:</label>
+              <switch class="mini-switch" color="#163c87" disabled="{{ble.connectionStatus?false:true}}" checked="{{ble.connectionStatus}}" bindchange='switchConnection'/>
+            </view>
+          </view>
+          <view class="blu-table">
+            <view class="table-header">
+              <view class="clomun1">序号</view>
+              <view class="clomun2">名称</view>
+              <view class="clomun3">操作</view>
+            </view>
+            <view class="table-body" wx:for='{{devices}}' wx:key='index' wx:for-item="item">
+              <view class="clomun1">{{index}}</view>
+              <view class="clomun2">{{''==item.name?'未命名':item.name}}</view>
+              <view class="clomun3" bindtap='connectDevice' data-name='{{item.name}}' data-deviceId='{{item.deviceId}}'>连接</view>
+            </view>
+          </view>
+        </view>
+        <view class="setting-main-cmd">
+          <view class="setting-main-cmd-title">
+            <text>指令设置</text>
+          </view>
+          <view class="cmd-table">
+            <view class="table-header">
+              <view class="clomun1">名称</view>
+              <view class="clomun2">功能</view>
+              <view class="clomun3">有效</view>
+              <view class="clomun4">无效</view>
+              <view class="clomun5">操作</view>
+            </view>
+            <view class="table-body" wx:for="{{commands}}" wx:for-index="key" wx:key="index"  wx:for-item="command">
+              <view class="clomun1">{{command.name}}</view>
+              <view class="clomun2">{{command.func}}</view>
+              <view class="clomun3">{{command.high}}</view>
+              <view class="clomun4">{{command.low}}</view>
+              <view class="clomun5" bindtap='editCommand' data-key='{{key}}'>修改</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 内容结束 -->
+  </view>
+  <!-- 弹窗结束-->
+
+  <!-- 修改指令弹出层开始 -->
+<!-- 输入弹框 -->
+<view class='toast-box' hidden='{{!showCommandEditForm}}'>
+    <view class='toastbg'></view>
+    <view class='showToast'>
+        <view class='toast-title'>
+            <text>{{form.name}}指令</text>
+        </view>
+        <view class='toast-main'>
+            <view class='toast-input-line'>
+              <lable>功能类别：</lable>
+              <input disabled="true" placeholder='功能名' maxlength="5" bindinput='bindInput' data-item='func' value="{{form.func}}"/>
+            </view>
+            <view class='toast-input-line'>
+                <lable>有效：</lable>
+                <input type="number" placeholder='按下发送指令值,eg:0x01' maxlength="3" bindinput='bindInput' data-item='high' value="{{form.high}}"/>
+            </view>
+            <view class='toast-input-line'>
+                <lable>无效：</lable>
+                <input type="number" placeholder='松开发送指令值,eg:0xAB' maxlength="3" bindinput='bindInput' data-item='low' value="{{form.low}}"/>
+            </view>
+        </view>
+        <view class='toast-button'>
+           <label bindtap="hiddenCommandEditForm">取消</label>
+           <label bindtap="sureSave">确定</label>
+        </view>
+    </view>
+</view>
+<!-- 修改指令弹出层结束 -->
+
+
+</view>
+<!--最外层盒子结束-->
+
+

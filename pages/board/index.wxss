@@ -1,0 +1,636 @@
+/* pages/board/index.wxss */
+/*控制中心区域开始*/
+/* 页面标题样式 */
+.container .page-head{
+  width: 100vmax;
+  height: 6vmin;
+}
+
+/* 页面标题图片背景 */
+.container .page-head .page-head-background{
+  height: 6vmin;
+  width: 100vmax !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* 页面标题文字 */
+.container .page-head view{
+  width: 100vmin;
+  height: 5vmin;
+  position: absolute;
+  top: 1vmin;
+  left: 12vmin;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.container .page-head view .page-name{
+  font-size: 12rpx;
+}
+
+.container .page-head view .page-clock{
+  margin-left: 6vmin;
+  font-size: 8rpx;
+}
+
+.container .page-head view .page-set{
+  margin-left: 5vmin;
+  width: 4vmin;
+  height: 4vmin;
+}
+
+/*控制中心区域盒子样式*/
+.container .operation-view{
+  width: -webkit-fill-available;
+  height: 70vmin;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* 上部控制面板盒子 */
+.container .operation-view .operation-top{
+  flex: 1;
+  width: fill-available;
+  width: -webkit-fill-available;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 方向操作样式 */
+.container .operation-view .operation-top .operation-direction{
+  height: 100%;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 方向按键组合 */
+.container .operation-view .operation-top .operation-direction .operation-direction-group{
+  width: 40vmin;
+  height: 40vmin;
+}
+
+/* 手柄按键通用样式开始 */
+.container .operation-view .operation-top .pie{
+  position: relative;
+  margin: 1em auto;
+  padding: 0;
+  border-radius: 50%;
+  list-style: none;
+  overflow: hidden;
+}
+
+.container .operation-view .operation-top .slice {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 100%;
+}
+
+.container .operation-view .operation-top .slice-one {
+  transform: rotate(45deg) skewY(0deg);
+}
+
+.container .operation-view .operation-top .slice-two {
+  transform: rotate(135deg) skewY(-0deg);
+}
+
+.container .operation-view .operation-top .slice-three {
+  transform: rotate(225deg) skewY(0deg);
+}
+
+.container .operation-view .operation-top .slice-four {
+  transform: rotate(315deg) skewY(0deg);
+}
+
+.container .operation-view .operation-top .slice-color-style1{
+  background-color: #065aab;
+}
+
+.container .operation-view .operation-top .slice-color-style2{
+  background-color: #096eab;
+}
+/* 手柄按键通用样式结束 */
+
+
+/* 仪表盘区域 */
+.container .operation-view .operation-top .operation-info{
+  height: 100%;
+  width: 30%;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+/* 仪表盘区域组合 */
+.container .operation-view .operation-top .operation-info .operation-info-group{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 0.8rem;
+  width: fit-content;
+}
+
+.container .operation-view .operation-top .operation-info .operation-info-group .project-name{
+  margin-top: 1.1rem;
+  font-size: 1.8rem;
+}
+
+/* 档位操作区域 */
+.container .operation-view .operation-top .operation-gear{
+  height: 100%;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+/* 档位按键组合 */
+.container .operation-view .operation-top .operation-gear .operation-gear-group{
+  width: 40vmin;
+  height: 40vmin;
+}
+
+/* 底部控制面板区域 */
+.container .operation-view .operation-bottom{
+  width: fill-available;
+  width: -webkit-fill-available;
+  height: fit-content;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+}
+
+/*单个控制组件容器*/
+.container .operation-view .operation-bottom .ctrl-item{
+  width: 10rem;
+  height: 2rem;
+  padding-right: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/*单个控制组件标题*/
+.container .operation-view .operation-bottom .ctrl-item .ctrl-item-label{
+  font-size: 0.7rem;
+}
+
+/*单个控制组件*/
+.container .operation-view .operation-bottom .ctrl-item .ctrl-item-element{
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+/*控制中心区域结束*/
+
+/*看板区域*/
+.container .board-view{
+  flex: 1;
+  width: -webkit-fill-available;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content:space-between;
+  font-size: 12rpx;
+  padding: 1rem;
+}
+
+/*看板表格*/
+.container .board-view .table{
+  border-collapse:collapse;
+  text-align: center;
+}
+
+/* 表头 */
+.container .board-view .table .table-head{
+  border-top:1rpx solid Black;
+  border-bottom:1rpx solid Black;
+  background-color: #163c87;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+/*表格的边框样式*/
+.container .board-view .table .td{
+  width: 20vmin;
+  height: 5vmin;
+  border-left:1rpx solid Black;
+  padding: 0.2vmin;
+  background-color: #142964;
+}
+
+.container .board-view .table .td-end{
+  width: 20vmin;
+  height: 5vmin;
+  border-left:1rpx solid Black;
+  border-right:1rpx solid Black;
+  background-color: #142964;
+  padding: 0.2vmin;
+}
+
+/* 数据体 */
+.container .board-view .table .table-body{
+  font-weight: lighter;
+  border-bottom:1rpx solid Black;
+  background-color: #163c87;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* 设置弹出层开始 */
+/* 遮罩 */
+.container .shadow{
+  width: 100vmax;
+  height: 100vmin;
+  z-index: 97;
+  position: absolute;
+  top: 0;
+  background-color: #000;
+  opacity: 0.5;
+}
+
+.container .choosen{
+  /* 左滑宽度 */
+  width: 80vmax;
+  height:100vmin;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background: #0b1530;
+  z-index: 98;
+}
+
+/* 内容 */
+.container .choosen .modal-container{
+  height: 100%;
+  width: 100%;
+  z-index: 98;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: 0.8rem;
+}
+/* 设置弹出层开始 */
+
+/* 设备面板弹窗标题 */
+.container .choosen .modal-container .setting-header{
+  width: 100%;
+  height: 6vmin;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1vmin;
+}
+
+/* 弹框的关闭按钮 */
+.container .choosen .modal-container .setting-header .modal-close{
+  width: 4vmin;
+  height: 4vmin;
+}
+
+/* 弹框中-系统模块标题 */
+.container .choosen .modal-container .setting-sys-title{
+  width: 100%;
+  height: 6vmin;
+  padding-left: 2vmin;
+  padding-right: 2vmin;
+}
+
+.container .choosen .modal-container .setting-sys-title text{
+  font-size: 12rpx;
+  border-left:1vmin solid #096eab;
+  padding-left: 2vmin;
+}
+
+/* 弹框中-系统设置 */
+.container .choosen .modal-container .setting-sys-ctrl{
+  width: 100%;
+  height: 12vmin;
+  padding-left: 2vmin;
+  padding-right: 2vmin;
+  font-size: 12rpx;
+  font-weight: lighter;
+}
+
+.container .choosen .modal-container .setting-sys-ctrl switch{
+  margin-left: 20vmin;
+}
+
+/* 弹框中-应用设置盒子 */
+.container .choosen .modal-container .setting-main{
+  width: 100%;
+  flex: 1;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+
+/* 左边蓝牙设置 */
+.container .choosen .modal-container .setting-main .setting-main-blu{
+  height: 100%;
+  width: 48%;
+}
+
+/* 左边蓝牙设置的标题 */
+.container .choosen .modal-container .setting-main .setting-main-blu .setting-main-blu-title{
+  width: 100%;
+  height: 6vmin;
+  padding-left: 2vmin;
+  padding-right: 2vmin;
+}
+
+.container .choosen .modal-container .setting-main .setting-main-blu .setting-main-blu-title text{
+  font-size: 12rpx;
+  border-left:1vmin solid #096eab;
+  padding-left: 2vmin;
+}
+
+/* 蓝牙工具栏 */
+.container .choosen .modal-container .setting-main .setting-main-blu .setting-main-blu-tools{
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 2vmin;
+  padding-right: 2vmin;
+  font-weight: lighter;
+}
+
+.container .choosen .modal-container .setting-main .setting-main-blu .setting-main-blu-tools view{
+  width: 50%;
+  font-size: 12rpx;
+}
+
+/* 蓝牙表格 */
+.container .choosen .modal-container .setting-main .setting-main-blu .blu-table{
+  width: 100%;
+  flex: 1;
+  padding: 2vmin;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 10rpx;
+}
+
+/* 表头样式 */
+.container .choosen .modal-container .setting-main .setting-main-blu .blu-table .table-header{
+  width: 100%;
+  height: 6vim;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-top:1rpx solid #fff;
+  border-bottom:1rpx solid #fff;
+}
+
+.container .choosen .modal-container .setting-main .setting-main-blu .blu-table .clomun1{
+  width: 20%;
+  border-left:1rpx solid #fff;
+  text-align: center;
+}
+
+.container .choosen .modal-container .setting-main .setting-main-blu .blu-table .clomun2{
+  flex: 1;
+  border-left:1rpx solid #fff;
+  text-align: center;
+}
+
+.container .choosen .modal-container .setting-main .setting-main-blu .blu-table .clomun3{
+  width: 25%;
+  border-left:1rpx solid #fff;
+  border-right:1rpx solid #fff;
+  text-align: center;
+}
+
+/* 数据体 */
+.container .choosen .modal-container .setting-main .setting-main-blu .blu-table .table-body{
+  width: 100%;
+  height: 6vim;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom:1rpx solid #fff;
+  font-weight: lighter;
+}
+
+/* 右边指令设置 */
+.container .choosen .modal-container .setting-main .setting-main-cmd{
+  margin-left: 1%;
+  height: 100%;
+  width: 48%;
+}
+
+/* 右边指令设置的标题 */
+.container .choosen .modal-container .setting-main .setting-main-cmd .setting-main-cmd-title{
+  width: 100%;
+  height: 6vmin;
+  padding-left: 2vmin;
+  padding-right: 2vmin;
+}
+
+.container .choosen .modal-container .setting-main .setting-main-cmd .setting-main-cmd-title text{
+  font-size: 12rpx;
+  border-left:1vmin solid #096eab;
+  padding-left: 2vmin;
+}
+
+/* 指令表格 */
+.container .choosen .modal-container .setting-main .setting-main-cmd .cmd-table{
+  width: 100%;
+  flex: 1;
+  padding: 2vmin;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 10rpx;
+}
+
+/* 表头样式 */
+.container .choosen .modal-container .setting-main .setting-main-cmd .cmd-table .table-header{
+  width: 100%;
+  height: 6vim;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-top:1rpx solid #fff;
+  border-bottom:1rpx solid #fff;
+}
+
+.container .choosen .modal-container .setting-main .setting-main-cmd .cmd-table .clomun1{
+  flex: 1;
+  height: 100%;
+  border-left:1rpx solid #fff;
+  text-align: center;
+}
+
+.container .choosen .modal-container .setting-main .setting-main-cmd .cmd-table .clomun2{
+  width: 20%;
+  height: 100%;
+  border-left:1rpx solid #fff;
+  text-align: center;
+}
+
+.container .choosen .modal-container .setting-main .setting-main-cmd .cmd-table .clomun3{
+  width: 20%;
+  height: 100%;
+  border-left:1rpx solid #fff;
+  text-align: center;
+}
+
+.container .choosen .modal-container .setting-main .setting-main-cmd .cmd-table .clomun4{
+  width: 20%;
+  height: 100%;
+  border-left:1rpx solid #fff;
+  text-align: center;
+}
+
+.container .choosen .modal-container .setting-main .setting-main-cmd .cmd-table .clomun5{
+  width: 12%;
+  height: 100%;
+  border-left:1rpx solid #fff;
+  border-right:1rpx solid #fff;
+  text-align: center;
+}
+
+/* 数据体 */
+.container .choosen .modal-container .setting-main .setting-main-cmd .cmd-table .table-body{
+  width: 100%;
+  height: 6vim;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom:1rpx solid #fff;
+  font-weight: lighter;
+}
+
+/* 修改指令弹出侧开始 */
+/* 弹窗样式 */
+.toast-box {
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  position: fixed;
+  top: 0rem;
+  left: 0rem;
+  z-index: 99;
+}
+
+.toast-box .toastbg {
+  opacity: 0.2;
+  background-color: black;
+  position: absolute;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.toast-box .showToast {
+  position: absolute;
+  opacity: 1;
+  width: 30%;
+  margin-left: 35%;
+  margin-top: 15%;
+}
+
+.toast-box .showToast .toast-title {
+  padding-left: 5%;
+  background-color: #163c87;
+  color: #fff;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  border-top-right-radius: 0.4rem;
+  border-top-left-radius: 0.4rem;
+  font-size: 12rpx;
+}
+
+.toast-box .showToast .toast-main {
+  background-color: #fff;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #000;
+  font-size: 10rpx;
+  font-weight: lighter;
+}
+
+.toast-box .showToast .toast-input-line{
+  width: -webkit-fill-available;
+  padding: 0rem 1rem 0rem 1rem;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 0.7rem;
+}
+
+.toast-box .showToast .toast-input-line>label{
+  padding-right: 0.4rem;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.toast-box .showToast .toast-input-line>input{
+  flex: 1;
+}
+
+
+.toast-box .showToast .toast-button {
+  padding: 0.15rem;
+  background-color: #163c87;
+  border-bottom-left-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 0.6rem;
+}
+
+
+/* 修改指令弹出侧结束 */
