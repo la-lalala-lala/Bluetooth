@@ -1,14 +1,19 @@
 {
   "pages": [
+    "pages/board/index",
     "pages/home/index"
   ],
   "window": {
     "pageOrientation": "landscape",
-    "navigationBarBackgroundColor": "#ededed",
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "蓝牙控制终端",
+    "navigationBarBackgroundColor": "#0b1530",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "控制面板",
     "backgroundTextStyle": "light",
-    "backgroundColor": "#ededed"
+    "backgroundColor": "#ededed",
+    "navigationStyle":"custom"
+  },
+  "useExtendedLib": {
+    "weui": true
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json"

@@ -13,12 +13,13 @@
   justify-content: flex-start;
   padding: 0;
   box-sizing: border-box;
-  color: #323233;
+  color: #fff;
   font-size: 26rpx;
+  background-color: #0b1530;
 } 
 
 page{
-  background-color: #ededed;
+  color: #fff;
 }
 
 /* 改写微信自带switch大小 */
