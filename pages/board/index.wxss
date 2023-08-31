@@ -22,7 +22,7 @@
   position: absolute;
   top: 1vmin;
   left: 12vmin;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -47,7 +47,7 @@
 .container .operation-view{
   width: -webkit-fill-available;
   height: 70vmin;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,7 +59,7 @@
   flex: 1;
   width: fill-available;
   width: -webkit-fill-available;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -69,7 +69,7 @@
 /* 方向操作样式 */
 .container .operation-view .operation-top .operation-direction{
   height: 100%;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -132,7 +132,7 @@
 .container .operation-view .operation-top .operation-info{
   height: 100%;
   width: 30%;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -140,7 +140,7 @@
 
 /* 仪表盘区域组合 */
 .container .operation-view .operation-top .operation-info .operation-info-group{
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -157,7 +157,7 @@
 /* 档位操作区域 */
 .container .operation-view .operation-top .operation-gear{
   height: 100%;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -174,7 +174,7 @@
   width: fill-available;
   width: -webkit-fill-available;
   height: fit-content;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -211,7 +211,7 @@
 .container .board-view{
   flex: 1;
   width: -webkit-fill-available;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -295,7 +295,7 @@
   height: 100%;
   width: 100%;
   z-index: 98;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -308,7 +308,7 @@
 .container .choosen .modal-container .setting-header{
   width: 100%;
   height: 6vmin;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -354,7 +354,7 @@
 .container .choosen .modal-container .setting-main{
   width: 100%;
   flex: 1;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -365,6 +365,9 @@
 .container .choosen .modal-container .setting-main .setting-main-blu{
   height: 100%;
   width: 48%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 /* 左边蓝牙设置的标题 */
@@ -383,7 +386,7 @@
 
 /* 蓝牙工具栏 */
 .container .choosen .modal-container .setting-main .setting-main-blu .setting-main-blu-tools{
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -403,7 +406,7 @@
   width: 100%;
   flex: 1;
   padding: 2vmin;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -414,7 +417,7 @@
 .container .choosen .modal-container .setting-main .setting-main-blu .blu-table .table-header{
   width: 100%;
   height: 6vim;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -445,7 +448,7 @@
 .container .choosen .modal-container .setting-main .setting-main-blu .blu-table .table-body{
   width: 100%;
   height: 6vim;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -479,7 +482,7 @@
   width: 100%;
   flex: 1;
   padding: 2vmin;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -490,7 +493,7 @@
 .container .choosen .modal-container .setting-main .setting-main-cmd .cmd-table .table-header{
   width: 100%;
   height: 6vim;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -538,7 +541,7 @@
 .container .choosen .modal-container .setting-main .setting-main-cmd .cmd-table .table-body{
   width: 100%;
   height: 6vim;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -587,7 +590,7 @@
 
 .toast-box .showToast .toast-main {
   background-color: #fff;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -600,7 +603,7 @@
 .toast-box .showToast .toast-input-line{
   width: -webkit-fill-available;
   padding: 0rem 1rem 0rem 1rem;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -624,7 +627,7 @@
   background-color: #163c87;
   border-bottom-left-radius: 0.4rem;
   border-bottom-right-radius: 0.4rem;
-  display: -webkit-flex;
+  display: flex;
   display: flex;
   flex-direction: row;
   align-items: center;

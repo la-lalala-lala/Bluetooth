@@ -61,15 +61,21 @@
       <!-- 底部控制面板开始 -->
       <view class="operation-bottom">
         <view class="ctrl-item">
-            <span class="ctrl-item-label">电源:</span>
+            <span class="ctrl-item-label">电源系统:</span>
             <view class="ctrl-item-element">
                 <switch class="mini-switch" color="#163c87" disabled="{{ble.connectionStatus?false:true}}" data-key="PT" bindchange="mychange" checked="{{ble.powerSwitch}}"/>
             </view>
         </view>
         <view class="ctrl-item">
-            <span class="ctrl-item-label">驱动:</span>
+            <span class="ctrl-item-label">动力系统:</span>
             <view class="ctrl-item-element">
                 <switch class="mini-switch" color="#163c87" disabled="{{ble.powerSwitch?false:true}}" data-key="DT" bindchange="mychange" checked="{{ble.driverSwitch}}"/>
+            </view>
+        </view>
+        <view class="ctrl-item">
+            <span class="ctrl-item-label">照明系统:</span>
+            <view class="ctrl-item-element">
+                <switch class="mini-switch" color="#163c87" disabled="{{ble.lightSwitch?false:true}}" data-key="LS" bindchange="mychange" checked="{{ble.lightSwitch}}"/>
             </view>
         </view>
       </view>
@@ -135,16 +141,18 @@
             </view>
           </view>
           <view class="blu-table">
-            <view class="table-header">
-              <view class="clomun1">序号</view>
-              <view class="clomun2">名称</view>
-              <view class="clomun3">操作</view>
-            </view>
-            <view class="table-body" wx:for='{{devices}}' wx:key='index' wx:for-item="item">
-              <view class="clomun1">{{index}}</view>
-              <view class="clomun2">{{''==item.name?'未命名':item.name}}</view>
-              <view class="clomun3" bindtap='connectDevice' data-name='{{item.name}}' data-deviceId='{{item.deviceId}}'>连接</view>
-            </view>
+            <scroll-view scroll-y enhanced show-scrollbar="false" style="width: 100%;height: calc(100% - 20rpx);">
+              <view class="table-header">
+                <view class="clomun1">序号</view>
+                <view class="clomun2">名称</view>
+                <view class="clomun3">操作</view>
+              </view>
+              <view class="table-body" wx:for='{{devices}}' wx:key='index' wx:for-item="item">
+                <view class="clomun1">{{index+1}}</view>
+                <view class="clomun2">{{''==item.name?'未命名':item.name}}</view>
+                <view class="clomun3" bindtap='connectDevice' data-name='{{item.name}}' data-deviceId='{{item.deviceId}}'>连接</view>
+              </view>
+            </scroll-view >
           </view>
         </view>
         <view class="setting-main-cmd">

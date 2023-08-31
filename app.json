@@ -10,7 +10,8 @@
     "navigationBarTitleText": "控制面板",
     "backgroundTextStyle": "light",
     "backgroundColor": "#ededed",
-    "navigationStyle":"custom"
+    "navigationStyle":"custom",
+    "disableScroll":true
   },
   "useExtendedLib": {
     "weui": true

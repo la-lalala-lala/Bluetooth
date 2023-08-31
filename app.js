@@ -8,7 +8,8 @@ App({
       RT:{"name": '右转', "func":'0x03',"high": '0x02',"low":'0x00'},// 按下&松开触发
       D:{"name": '前进', "func":'0x04',"high": '0x01',"low":'0x00'},// 按下&松开触发
       R:{"name": '后退', "func":'0x04',"high": '0x02',"low":'0x00'},// 按下&松开触发
-      DT:{"name": '驱动', "func":'0x02',"high": '0x01',"low":'0x00'}// 改变时触发
+      DT:{"name": '动力', "func":'0x02',"high": '0x01',"low":'0x00'},// 改变时触发
+      LS:{"name": '照明', "func":'0x01',"high": '0x01',"low":'0x00'}// 改变时触发
     }
     wx.setStorageSync('defaultCommands', commands)
 

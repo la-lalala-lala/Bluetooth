@@ -450,7 +450,11 @@ Page({
           for (const key in devices.devices) {
             const item = devices.devices[key]
             if(''!==item.name && true === item.connectable){
-              _device.push(item)
+              // 检查待加入的设备是否已经添加过
+              const found = _device.find(e => e.name == item.name)
+              if(!found){
+                _device.push(item)
+              }
             }else{
               console.log(item.deviceId+'的name为空,已经自动过滤')
             }
