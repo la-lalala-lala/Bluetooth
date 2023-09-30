@@ -8,6 +8,8 @@ Page({
   data: {
     // 页面时钟
     clock:'',
+    // 心跳时间
+    heartClock:'',
     // 动画数据
     animationData: null,
     // 是否显示设置modal
@@ -38,7 +40,7 @@ Page({
     // 初始化 
     that.initCommand()
     setInterval(function () {
-      const now = dateUtil.formatTime(new Date());
+      const now = dateUtil.formatDateTime(new Date());
       that.setData({
         clock:now
       })
@@ -290,16 +292,17 @@ Page({
     let _this = this
     let key = e.target.dataset.key
     let commands = _this.data.commands
-    let { func,touchstart} = commands[key]
-    if (func === null || func === '' || touchstart === null || touchstart === ''){
+    let { func,high} = commands[key]
+    if (func === null || func === '' || high === null || high === ''){
       wx.showModal({
         title: '错误提示',
         content: '您还没有设置该按钮按下发送指令，请在设置->修改指令页面设置'
       })
     }else{
-      //console.log(_this.string2buffer(func+touchstart))
+      //console.log(_this.string2buffer(func+high))
       // 16进制
-      _this.sendMy(_this.string2buffer(func+touchstart))
+      console.log("得到的按下的原始指令：",func,high)
+      _this.sendMy(_this.string2buffer(func+high))
       // _this.sendMy(_this.string2buffer("0x01"))
     }
   },
@@ -311,17 +314,18 @@ Page({
     let _this = this
     let key = e.target.dataset.key
     let commands = _this.data.commands
-    let { func,touchend} = commands[key]
-    if (func === null || func === '' || touchend === null || touchend === ''){
+    let { func,low} = commands[key]
+    if (func === null || func === '' || low === null || low === ''){
       wx.showModal({
         title: '错误提示',
         content: '您还没有设置该按钮按下发送指令，松开指令不能发送'
       })
     } else{
-      //console.log(_this.string2buffer(func+touchend))
+      //console.log(_this.string2buffer(func+low))
       // 16进制
       // this.sendMy(this.string2buffer('0xAB'))
-      _this.sendMy(_this.string2buffer(func+touchend))
+      console.log("得到的松开的原始指令：",func,low)
+      _this.sendMy(_this.string2buffer(func+low))
     }
   },
 
@@ -339,7 +343,6 @@ Page({
         content: '您还没有设置该按钮按下发送指令，松开指令不能发送'
       })
     } else{
-      //console.log(_this.string2buffer(func+touchend))
       // 16进制
       // this.sendMy(this.string2buffer('0xAB'))
       console.log("得到的原始指令：",func,value)
@@ -363,15 +366,34 @@ Page({
       })
       return
     }
+
+    let ble = _this.data.ble
+    let status = false;
     if (true == e.detail.value){
       // 打开
       // this.sendMy(this.string2buffer('0xAB'))
+      console.log("准备发送指令：",func+high)
+      status = true;
       _this.sendMy(_this.string2buffer(func+high))
     }else{
       // 关闭
       // this.sendMy(this.string2buffer('0xAB'))
+      console.log("准备发送指令：",func+low)
+      status = false;
       _this.sendMy(_this.string2buffer(func+low))
     }
+    if ('PT' === key){
+      ble.powerSwitch = status;
+    }
+    if ('DT' === key){
+      ble.driverSwitch = status;
+    }
+    if ('LS' === key){
+      ble.lightSwitch = status;
+    }
+    _this.setData({
+      ble:ble
+    })
   },
 
   /**
@@ -672,19 +694,29 @@ Page({
     if('01ff'===command){
       console.log("收到心跳啦~")
       that.sendMy(that.string2buffer('0x01FF'))
-    }else if('0001'===hex){
+      // 更新心跳时间
+      that.setData({
+        heartClock:dateUtil.formatTime(new Date())
+      })
+    }else if('0001'===command){
       console.log("设备已开启")
       // 设备已经启动
-    }else if('0000'===hex){
+      let ble = that.data.ble
+      ble.powerSwitch = true;
+      that.setData({
+        ble:ble
+      })
+    }else if('0000'===command){
       console.log("设备已关闭")
       // 设备已经关闭
       // 级联的驱动也应该关闭
-    }else if('0201'===hex){
-      console.log("驱动已开启")
-      // 驱动已经启动
-    }else if('0200'===hex){
-      console.log("驱动已关闭")
-      // 驱动已经关闭
+      let ble = that.data.ble
+      ble.powerSwitch = false;
+      ble.driverSwitch = false;
+      ble.lightSwitch = false;
+      that.setData({
+        ble:ble
+      })
     }
   },
 
@@ -839,7 +871,7 @@ Page({
     let that = this
     that.setData({
       showCommandEditForm: false,
-      form: { "name": '', "touchstart": '', "touchend": '',"key": '',"type": '',}
+      form: { "name": '', "high": '', "low": '',"key": '',"type": '',}
     })
   },
 
